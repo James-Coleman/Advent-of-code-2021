@@ -4,7 +4,7 @@ var greeting = "Hello, playground"
 
 class BingoSquare {
     let number: Int
-    var selected: Bool = false
+    var marked: Bool = false
     
     init(_ number: Int) {
         self.number = number
@@ -14,6 +14,14 @@ class BingoSquare {
 class BingoBoard {
     let rows: [[BingoSquare]]
     let columns: [[BingoSquare]]
+    
+    convenience init(_ string: String) {
+        let rows = string.components(separatedBy: .newlines)
+        let numbers = rows.map { $0.components(separatedBy: .whitespaces )}
+        let ints = numbers.map { $0.compactMap { Int($0) } }
+        
+        self.init(ints)
+    }
     
     init(_ numbers: [[Int]]) {
         let rows = numbers.map { array in
@@ -37,11 +45,11 @@ class BingoBoard {
         self.columns = columns
     }
     
-    func selected(_ number: Int) {
+    func marked(_ number: Int) {
         for row in rows {
             for square in row {
                 if square.number == number {
-                    square.selected = true
+                    square.marked = true
                     return
                 }
             }
@@ -51,7 +59,7 @@ class BingoBoard {
     var winningNumbers: [BingoSquare]? {
         for row in rows {
             let rowCount = row.count
-            let selectedSquares = row.filter { $0.selected }
+            let selectedSquares = row.filter { $0.marked }
             let selectedCount = selectedSquares.count
             if selectedCount == rowCount {
                 return row
@@ -60,7 +68,7 @@ class BingoBoard {
         
         for column in columns {
             let columnCount = column.count
-            let selectedSquares = column.filter { $0.selected }
+            let selectedSquares = column.filter { $0.marked }
             let selectedCount = selectedSquares.count
             if selectedCount == columnCount {
                 return column
@@ -68,6 +76,13 @@ class BingoBoard {
         }
         
         return nil
+    }
+    
+    var sumOfUnmarkedNumbers: Int {
+        rows.flatMap { $0.filter { $0.marked == false } }
+            .reduce(0) { soFar, next in
+                soFar + next.number
+            }
     }
 }
 
@@ -85,23 +100,46 @@ let ints1 = numbers1.map { $0.compactMap { Int($0) } }
 
 let board1 = BingoBoard(ints1)
 
-board1.columns[1][1].selected = true
+board1.columns[1][1].marked = true
 
 board1 // proves classes are working
 
-board1.selected(8)
+board1.marked(8)
 
 board1
 
 board1.winningNumbers
 
-board1.selected(22)
-board1.selected(13)
-board1.selected(17)
-board1.selected(11)
+board1.marked(22)
+board1.marked(13)
+board1.marked(17)
+board1.marked(11)
 
 board1.winningNumbers
 
-board1.selected(0)
+board1.marked(0)
 
 board1.winningNumbers
+
+let exampleBoard3 = """
+    14 21 17 24  4
+    10 16 15  9 19
+    18  8 23 26 20
+    22 11 13  6  5
+     2  0 12  3  7
+    """
+
+let board3 = BingoBoard(exampleBoard3)
+
+let exampleInput = [7,4,9,5,11,17,23,2,0,14,21,24]
+
+loop:
+for number in exampleInput {
+    board3.marked(number)
+    
+    if let winningNumbers = board3.winningNumbers {
+        let score = board3.sumOfUnmarkedNumbers * number // 4512 (correct)
+        
+        break loop
+    }
+}
