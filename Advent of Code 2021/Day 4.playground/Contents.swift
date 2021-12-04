@@ -47,6 +47,28 @@ class BingoBoard {
             }
         }
     }
+    
+    var winningNumbers: [BingoSquare]? {
+        for row in rows {
+            let rowCount = row.count
+            let selectedSquares = row.filter { $0.selected }
+            let selectedCount = selectedSquares.count
+            if selectedCount == rowCount {
+                return row
+            }
+        }
+        
+        for column in columns {
+            let columnCount = column.count
+            let selectedSquares = column.filter { $0.selected }
+            let selectedCount = selectedSquares.count
+            if selectedCount == columnCount {
+                return column
+            }
+        }
+        
+        return nil
+    }
 }
 
 let exampleBoard1 = """
@@ -70,3 +92,16 @@ board1 // proves classes are working
 board1.selected(8)
 
 board1
+
+board1.winningNumbers
+
+board1.selected(22)
+board1.selected(13)
+board1.selected(17)
+board1.selected(11)
+
+board1.winningNumbers
+
+board1.selected(0)
+
+board1.winningNumbers
