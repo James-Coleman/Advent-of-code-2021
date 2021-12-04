@@ -36,6 +36,17 @@ class BingoBoard {
         
         self.columns = columns
     }
+    
+    func selected(_ number: Int) {
+        for row in rows {
+            for square in row {
+                if square.number == number {
+                    square.selected = true
+                    return
+                }
+            }
+        }
+    }
 }
 
 let exampleBoard1 = """
@@ -55,3 +66,7 @@ let board1 = BingoBoard(ints1)
 board1.columns[1][1].selected = true
 
 board1 // proves classes are working
+
+board1.selected(8)
+
+board1
