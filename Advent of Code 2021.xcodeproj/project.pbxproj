@@ -24,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		C68948FE2758BC40003DF504 /* Day 2.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 2.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		C6A3586B275BFB9600526EB9 /* Day 4.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 4.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6B3E4962759E2560068D28C /* Day 3.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 3.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6CC145127574732006CA598 /* Advent of Code 2021 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Advent of Code 2021"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6CC145427574732006CA598 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -64,6 +65,7 @@
 				C6CC145B27574856006CA598 /* Day 1.playground */,
 				C68948FE2758BC40003DF504 /* Day 2.playground */,
 				C6B3E4962759E2560068D28C /* Day 3.playground */,
+				C6A3586B275BFB9600526EB9 /* Day 4.playground */,
 			);
 			path = "Advent of Code 2021";
 			sourceTree = "<group>";
