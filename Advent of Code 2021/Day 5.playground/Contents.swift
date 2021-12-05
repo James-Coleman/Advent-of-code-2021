@@ -19,22 +19,24 @@ struct VentLine {
             let startY = startPoints.last,
             let endX = endPoints.first,
             let endY = endPoints.last,
-            startX == endX || startY == endY, // Ensure horizontal or vertical line
             let startXInt = Int(startX),
             let startYInt = Int(startY),
             let endXInt = Int(endX),
-            let endYInt = Int(endY)
+            let endYInt = Int(endY),
+            startX == endX || startY == endY || max(startXInt, endXInt) - min(startXInt, endXInt) == max(startYInt, endYInt) - min(startYInt, endYInt)  // Ensure horizontal, vertical, or perfect diagonal line
         else { return nil }
         
         var points = [CGPoint]()
         
         if startX == endX {
+            // Vertical line
             if startYInt < endYInt {
                 for y in startYInt...endYInt {
                     let point = CGPoint(x: startXInt, y: y)
                     points += [point]
                 }
             } else if startYInt == endYInt {
+                // Single point
                 let point = CGPoint(x: startXInt, y: startYInt)
                 points += [point]
             } else {
@@ -44,12 +46,16 @@ struct VentLine {
                 }
             }
         } else if startY == endY {
+            // Horizontal line
             if startXInt < endXInt {
                 for x in startXInt...endXInt {
                     let point = CGPoint(x: x, y: startYInt)
                     points += [point]
                 }
             } else if startXInt == endXInt {
+                // Single point
+                // This probably isn't needed because it would be executed by the startX == endX, startYInt == endYInt code above,
+                // But it's kept for clarity
                 let point = CGPoint(x: startXInt, y: startYInt)
                 points += [point]
             } else {
@@ -57,6 +63,24 @@ struct VentLine {
                     let point = CGPoint(x: x, y: startYInt)
                     points += [point]
                 }
+            }
+        } else {
+            // Diagonal line
+            let minX = min(startXInt, endXInt)
+            let minY = min(startYInt, endYInt)
+            let maxX = max(startXInt, endXInt)
+            let maxY = max(startYInt, endYInt)
+            
+            let xPoints = [Int](minX...maxX)
+            let yPoints = [Int](minY...maxY)
+            
+            for i in 0..<xPoints.count {
+                let x = xPoints[i]
+                let y = yPoints[i]
+                
+                let point = CGPoint(x: x, y: y)
+                
+                points += [point]
             }
         }
         
@@ -622,6 +646,6 @@ let puzzleInput = """
     895,258 -> 972,258
     """
 
-let puzzleGrid = VentGrid(puzzleInput)
+//let puzzleGrid = VentGrid(puzzleInput)
 
-puzzleGrid.overlappingVents // 5167 (correct)
+//puzzleGrid.overlappingVents // 5167 (correct)
