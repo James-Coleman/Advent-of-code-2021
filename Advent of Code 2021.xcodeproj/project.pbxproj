@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C689EFD0275C172E006901E2 /* Day 4.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689EFCF275C172E006901E2 /* Day 4.swift */; };
+		C689EFD4275DED88006901E2 /* Day 6 - Lanternfish.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689EFD3275DED88006901E2 /* Day 6 - Lanternfish.swift */; };
 		C6CC145527574732006CA598 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CC145427574732006CA598 /* main.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,8 @@
 		C68948FE2758BC40003DF504 /* Day 2.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 2.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C689EFCF275C172E006901E2 /* Day 4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day 4.swift"; sourceTree = "<group>"; };
 		C689EFD1275C874C006901E2 /* Day 5.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 5.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		C689EFD2275DE8F2006901E2 /* Day 6 - Lanternfish.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 6 - Lanternfish.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		C689EFD3275DED88006901E2 /* Day 6 - Lanternfish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day 6 - Lanternfish.swift"; sourceTree = "<group>"; };
 		C6A3586B275BFB9600526EB9 /* Day 4.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 4.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6B3E4962759E2560068D28C /* Day 3.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 3.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6CC145127574732006CA598 /* Advent of Code 2021 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Advent of Code 2021"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -66,11 +69,13 @@
 			children = (
 				C6CC145427574732006CA598 /* main.swift */,
 				C689EFCF275C172E006901E2 /* Day 4.swift */,
+				C689EFD3275DED88006901E2 /* Day 6 - Lanternfish.swift */,
 				C6CC145B27574856006CA598 /* Day 1.playground */,
 				C68948FE2758BC40003DF504 /* Day 2.playground */,
 				C6B3E4962759E2560068D28C /* Day 3.playground */,
 				C6A3586B275BFB9600526EB9 /* Day 4.playground */,
 				C689EFD1275C874C006901E2 /* Day 5.playground */,
+				C689EFD2275DE8F2006901E2 /* Day 6 - Lanternfish.playground */,
 			);
 			path = "Advent of Code 2021";
 			sourceTree = "<group>";
@@ -134,6 +139,7 @@
 			files = (
 				C689EFD0275C172E006901E2 /* Day 4.swift in Sources */,
 				C6CC145527574732006CA598 /* main.swift in Sources */,
+				C689EFD4275DED88006901E2 /* Day 6 - Lanternfish.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
