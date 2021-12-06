@@ -74,8 +74,12 @@ struct VentLine {
             let xPoints = [Int](minX...maxX)
             let yPoints = [Int](minY...maxY)
             
+            let flipped = (endXInt < startXInt && endYInt > startYInt) || (endYInt < startYInt && endXInt > startXInt)
+            
+            let trueXPoints = flipped ? xPoints.reversed() : xPoints
+            
             for i in 0..<xPoints.count {
-                let x = xPoints[i]
+                let x = trueXPoints[i]
                 let y = yPoints[i]
                 
                 let point = CGPoint(x: x, y: y)
@@ -122,6 +126,32 @@ struct VentGrid {
         
         return atLeast2Vents.count
     }
+    
+    func debug(x: Int, y: Int) -> String {
+        var stringToReturn = ""
+        
+        for y in 0..<y {
+            for x in 0..<x {
+                var count = 0
+                let point = CGPoint(x: x, y: y)
+                
+                for line in ventLines {
+                    if line.points.contains(point) {
+                        count += 1
+                    }
+                }
+                
+                if count == 0 {
+                    stringToReturn += "."
+                } else {
+                    stringToReturn += "\(count)"
+                }
+            }
+            stringToReturn += "\n"
+        }
+        
+        return stringToReturn
+    }
 }
 
 let exampleInput = """
@@ -139,9 +169,11 @@ let exampleInput = """
 
 let exampleGrid = VentGrid(exampleInput)
 
-print(exampleGrid)
+//print(exampleGrid)
 
 exampleGrid.overlappingVents
+
+print(exampleGrid.debug(x: 10, y: 10))
 
 let puzzleInput = """
     911,808 -> 324,221

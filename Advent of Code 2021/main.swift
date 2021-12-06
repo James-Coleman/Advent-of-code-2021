@@ -10,3 +10,4 @@ import Foundation
 print("Hello, World!")
 
 //day4()
+day5()

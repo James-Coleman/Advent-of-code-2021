@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C6161C4B275E32EE0002AA50 /* Day 5.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6161C4A275E32EE0002AA50 /* Day 5.swift */; };
 		C689EFD0275C172E006901E2 /* Day 4.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689EFCF275C172E006901E2 /* Day 4.swift */; };
 		C6CC145527574732006CA598 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CC145427574732006CA598 /* main.swift */; };
 /* End PBXBuildFile section */
@@ -24,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C6161C4A275E32EE0002AA50 /* Day 5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day 5.swift"; sourceTree = "<group>"; };
 		C68948FE2758BC40003DF504 /* Day 2.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 2.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C689EFCF275C172E006901E2 /* Day 4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day 4.swift"; sourceTree = "<group>"; };
 		C689EFD1275C874C006901E2 /* Day 5.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 5.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -67,6 +69,7 @@
 			children = (
 				C6CC145427574732006CA598 /* main.swift */,
 				C689EFCF275C172E006901E2 /* Day 4.swift */,
+				C6161C4A275E32EE0002AA50 /* Day 5.swift */,
 				C6CC145B27574856006CA598 /* Day 1.playground */,
 				C68948FE2758BC40003DF504 /* Day 2.playground */,
 				C6B3E4962759E2560068D28C /* Day 3.playground */,
@@ -135,6 +138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C689EFD0275C172E006901E2 /* Day 4.swift in Sources */,
+				C6161C4B275E32EE0002AA50 /* Day 5.swift in Sources */,
 				C6CC145527574732006CA598 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
