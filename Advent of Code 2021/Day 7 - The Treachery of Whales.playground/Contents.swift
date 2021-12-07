@@ -76,3 +76,23 @@ func part1() {
     
     print(fuels.sorted().first) // 341534 (correct)
 }
+
+let sorted = puzzleInput.sorted()
+sorted.first
+sorted.last
+
+let puzzleInputSum = puzzleInput.reduce(0, +)
+let puzzleInputAverage = puzzleInputSum / puzzleInput.count
+
+func part2() {
+    var fuels = [Int]()
+    
+    for guess in 400...600 {
+        let fuel = triangularFuelUsedToGet(to: guess, crabs: puzzleInput)
+        fuels += [fuel]
+    }
+    
+    print(fuels.sorted().first) // 93453484 (too high) // 93397707 (too high) // 93397632 (correct)
+}
+
+//part2()
