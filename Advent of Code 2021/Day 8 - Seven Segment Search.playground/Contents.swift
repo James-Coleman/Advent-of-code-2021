@@ -235,4 +235,166 @@ let exampleInput = """
     """
 
 //part1(input: exampleInput) // 26 (correct)
-part1(input: puzzleInput) // 310 (correct)
+//part1(input: puzzleInput) // 310 (correct)
+
+let exampleOne:   Set<String> = ["a", "b"]
+let exampleSeven: Set<String> = ["d", "a", "b"]
+let exampleFour:  Set<String> = ["e", "a", "f", "b"]
+let exampleEight: Set<String> = ["a", "c", "e", "d", "g", "f", "b"]
+
+let possibleNumbers = [2: [1],
+                       3: [7],
+                       4: [4],
+                       5: [2, 3, 5],
+                       6: [0, 6, 9],
+                       7: [8]]
+
+/*
+ If a 5 count set overlaps with the number 7 (4 count) set with an overlap count of 3, it could be the number 5 or the number 3.
+ Otherwise if it overlaps with a count of 2, it is the number 2.
+ If the resulting overlap set overlaps again with the number 1 (2 count) with a new overlap count of 2, it is the number 3.
+ Otherwise if it overlaps with a count of 1, it is the number 5
+ 
+ If a 6 count set overlaps entirely with the number 1 (2 count) set, it could be the number 9 or number 0.
+ Otherwise if it overlaps with a count of 1, it is the number 6.
+ If the original set overlaps again with the number 4 (4 count) with a new overlap count of 3, it is the number 0.
+ Otherwise if it overlaps with a count of 4, it is the number 9.
+ */
+
+enum Error: Swift.Error {
+    case alreadyProcessed(Set<String.Element>)
+    case unexpectedCount(Set<String.Element>)
+    case didNotFindOneOrFour(Set<String.Element>?, Set<String.Element>?)
+    case unexpectedOverlap
+    case reducedOutputNotANumber(String)
+}
+
+func analyse(input: [Set<String.Element>]) throws -> [Set<String.Element>: Int] {
+    var dictToReturn = [Set<String.Element>: Int]()
+    
+    var one: Set<String.Element>?
+    var four: Set<String.Element>?
+    
+    for set in input {
+        
+        switch set.count {
+            case 2:
+                dictToReturn[set] = 1
+                one = set
+            case 3:
+                dictToReturn[set] = 7
+            case 4:
+                dictToReturn[set] = 4
+                four = set
+            case 5, 6:
+                continue
+            case 7:
+                dictToReturn[set] = 8
+            default:
+                throw Error.unexpectedCount(set)
+        }
+    }
+    
+    guard let one = one, let four = four else { throw Error.didNotFindOneOrFour(one, four) }
+    
+    for set in input {
+        switch set.count {
+            case 5:
+                let overlap = set.intersection(four)
+                
+                if overlap.count == 3 {
+                    let nextOverlap = overlap.intersection(one)
+                    
+                    if nextOverlap.count == 2 {
+                        dictToReturn[set] = 3
+                    } else if nextOverlap.count == 1 {
+                        dictToReturn[set] = 5
+                    } else {
+                        throw Error.unexpectedOverlap
+                    }
+                } else if overlap.count == 2 {
+                    dictToReturn[set] = 2
+                } else {
+                    throw Error.unexpectedOverlap
+                }
+                
+            case 6:
+                let overlap = set.intersection(one)
+                
+                if overlap.count == 2 {
+                    let nextOverlap = set.intersection(four)
+                    
+                    if nextOverlap.count == 3 {
+                        dictToReturn[set] = 0
+                    } else if nextOverlap.count == 4 {
+                        dictToReturn[set] = 9
+                    } else {
+                        throw Error.unexpectedOverlap
+                    }
+                } else if overlap.count == 1 {
+                    dictToReturn[set] = 6
+                } else {
+                    throw Error.unexpectedOverlap
+                }
+                
+            default:
+                continue
+        }
+    }
+    
+    return dictToReturn
+}
+
+let exampleForAnalysis = "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab"
+let exampleAnalysisMapped = exampleForAnalysis
+    .components(separatedBy: .whitespaces)
+    .map { Set($0) }
+
+func decode(input: [Set<String.Element>], with dict: [Set<String.Element>: Int]) -> [Int] {
+    input.compactMap { dict[$0] }
+}
+
+let exampleForDecoding = "cdfeb fcadb cdfeb cdbaf"
+let exampleDecodingMapped = exampleForDecoding
+    .components(separatedBy: .whitespaces)
+    .map { Set($0) }
+
+do {
+    let key = try analyse(input: exampleAnalysisMapped)
+    decode(input: exampleDecodingMapped, with: key)
+} catch {
+    error
+}
+
+func part2(input: String) throws -> Int {
+    try input.components(separatedBy: .newlines)
+        .reduce(0) { soFar, next in
+            let components = next.components(separatedBy: " | ")
+            let encodedKey = components[0]
+                .components(separatedBy: .whitespaces)
+                .map { Set($0) }
+            
+            let key = try analyse(input: encodedKey)
+            
+            let encodedOutput = components[1]
+                .components(separatedBy: .whitespaces)
+                .map { Set($0) }
+            
+            let decodedNumbers = decode(input: encodedOutput, with: key)
+            
+            let reducedNumber = decodedNumbers
+                .map { String($0) }
+                .reduce("", +)
+            
+            guard let realNumber = Int(reducedNumber) else { throw Error.reducedOutputNotANumber(reducedNumber) }
+            
+            return soFar + realNumber
+        }
+}
+
+do {
+//    try part2(input: exampleInput) // 61229 (correct)
+    try part2(input: puzzleInput) // 915941 (correct)
+} catch {
+    error
+}
