@@ -394,7 +394,7 @@ func part2(input: String) throws -> Int {
 
 do {
 //    try part2(input: exampleInput) // 61229 (correct)
-    try part2(input: puzzleInput) // 915941 (correct)
+//    try part2(input: puzzleInput) // 915941 (correct)
 } catch {
     error
 }
