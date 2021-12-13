@@ -27,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		C6161C4A275E32EE0002AA50 /* Day 5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day 5.swift"; sourceTree = "<group>"; };
+		C641BA932764788200F5F964 /* Day 11 - Dumbo Octopus.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 11 - Dumbo Octopus.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C68948FE2758BC40003DF504 /* Day 2.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 2.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C689EFCF275C172E006901E2 /* Day 4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day 4.swift"; sourceTree = "<group>"; };
 		C689EFD1275C874C006901E2 /* Day 5.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 5.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -87,6 +88,7 @@
 				C6C0AFE92760A9E300E1D404 /* Day 8 - Seven Segment Search.playground */,
 				C6C0AFEE2762031E00E1D404 /* Day 9 - Smoke Basin.playground */,
 				C6C0AFF52763507800E1D404 /* Day 10 - Syntax Scoring.playground */,
+				C641BA932764788200F5F964 /* Day 11 - Dumbo Octopus.playground */,
 			);
 			path = "Advent of Code 2021";
 			sourceTree = "<group>";
