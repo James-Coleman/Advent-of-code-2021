@@ -89,8 +89,8 @@
 				C6C0AFE92760A9E300E1D404 /* Day 8 - Seven Segment Search.playground */,
 				C6C0AFEE2762031E00E1D404 /* Day 9 - Smoke Basin.playground */,
 				C6C0AFF52763507800E1D404 /* Day 10 - Syntax Scoring.playground */,
-				C6B1478F276741190014F185 /* Day 13 - Transparent Origami.playground */,
 				C641BA932764788200F5F964 /* Day 11 - Dumbo Octopus.playground */,
+				C6B1478F276741190014F185 /* Day 13 - Transparent Origami.playground */,
 			);
 			path = "Advent of Code 2021";
 			sourceTree = "<group>";

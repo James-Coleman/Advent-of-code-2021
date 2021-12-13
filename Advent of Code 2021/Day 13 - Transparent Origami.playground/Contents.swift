@@ -91,9 +91,9 @@ func debugPrint(_ points: Set<CGPoint>) {
             let testPoint = CGPoint(x: x, y: y)
             
             if points.contains(testPoint) {
-                string += "#"
+                string += "■"
             } else {
-                string += "."
+                string += " "
             }
         }
         
@@ -1159,4 +1159,27 @@ let puzzleInput = """
     798,732
     """
 
-points(from: puzzleInput).foldedAlong(x: 655).count // 842 (correct)
+//points(from: puzzleInput).foldedAlong(x: 655).count // 842 (correct)
+
+//debugPrint(points(from: puzzleInput)
+//            .foldedAlong(x: 655)
+//            .foldedAlong(y: 447)
+//            .foldedAlong(x: 327)
+//            .foldedAlong(y: 223)
+//            .foldedAlong(x: 163)
+//            .foldedAlong(y: 111)
+//            .foldedAlong(x: 81)
+//            .foldedAlong(y: 55)
+//            .foldedAlong(x: 40)
+//            .foldedAlong(y: 27)
+//            .foldedAlong(y: 13)
+//            .foldedAlong(y: 6)) // BFKRCJZU (correct)
+
+/*
+ ■■■  ■■■■ ■  ■ ■■■   ■■    ■■ ■■■■ ■  ■
+ ■  ■ ■    ■ ■  ■  ■ ■  ■    ■    ■ ■  ■
+ ■■■  ■■■  ■■   ■  ■ ■       ■   ■  ■  ■
+ ■  ■ ■    ■ ■  ■■■  ■       ■  ■   ■  ■
+ ■  ■ ■    ■ ■  ■ ■  ■  ■ ■  ■ ■    ■  ■
+ ■■■  ■    ■  ■ ■  ■  ■■   ■■  ■■■■  ■■
+ */
