@@ -33,6 +33,7 @@
 		C689EFD1275C874C006901E2 /* Day 5.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 5.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C689EFD2275DE8F2006901E2 /* Day 6 - Lanternfish.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 6 - Lanternfish.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6A3586B275BFB9600526EB9 /* Day 4.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 4.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		C6B1478F276741190014F185 /* Day 13 - Transparent Origami.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 13 - Transparent Origami.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6B3E4962759E2560068D28C /* Day 3.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 3.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6C0AFE92760A9E300E1D404 /* Day 8 - Seven Segment Search.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 8 - Seven Segment Search.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6C0AFEE2762031E00E1D404 /* Day 9 - Smoke Basin.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 9 - Smoke Basin.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -88,6 +89,7 @@
 				C6C0AFE92760A9E300E1D404 /* Day 8 - Seven Segment Search.playground */,
 				C6C0AFEE2762031E00E1D404 /* Day 9 - Smoke Basin.playground */,
 				C6C0AFF52763507800E1D404 /* Day 10 - Syntax Scoring.playground */,
+				C6B1478F276741190014F185 /* Day 13 - Transparent Origami.playground */,
 				C641BA932764788200F5F964 /* Day 11 - Dumbo Octopus.playground */,
 			);
 			path = "Advent of Code 2021";
