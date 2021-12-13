@@ -91,7 +91,7 @@ class Cave: Hashable {
                 }
                 return finalPaths
             case .small:
-                let validPaths = existingPaths.filter { $0.contains(where: { $0 == self } ) == false } // Path does not already contain self.
+                let validPaths = existingPaths.filter { $0.contains(where: { $0 == self } ) == false } // Path does not already contain self (a small cave).
                 guard validPaths.isEmpty == false else { return [] }
                 let newPaths = validPaths.map { $0 + [self] }
                 let connectionsWithoutStart = connections.filter { $0.schema != .start }
@@ -100,6 +100,54 @@ class Cave: Hashable {
                 let newPaths = existingPaths.map { $0 + [self] }
                 let connectionsWithoutStart = connections.filter { $0.schema != .start }
                 return connectionsWithoutStart.flatMap { $0.routesToEnd(existingPaths: newPaths, depth: depth + 1) }
+        }
+    }
+    
+    func routesToEndPart2(existingPaths: [[Cave]] = [], depth: Int = 0) -> [[Cave]] {
+        guard depth < 30 else { return [] } // (was meant to be) Protection against infinite loop
+        
+//        for path in existingPaths {
+//            print(path, depth)
+//        }
+        
+        switch schema {
+            case .start:
+                guard existingPaths.isEmpty else { return [] }
+                let starterPaths = connections.flatMap { $0.routesToEndPart2(existingPaths: [[self]], depth: depth + 1) }
+                return starterPaths
+            case .end:
+                guard existingPaths.isEmpty == false else { return [] }
+                let finalPaths = existingPaths.map { $0 + [self] }
+                for path in finalPaths {
+                    print(path, depth, "(final)")
+                }
+                return finalPaths
+            case .small:
+                // Stop if the array already contains 2 of the same small cave and self
+                
+                let validPaths2 = existingPaths.filter { array in
+                    for cave in array {
+                        let count = array.filter { $0 == cave }.count
+                        
+                        if count == 2 {
+                            // If the array already contains self, we can't add it again
+                            if array.contains(self) {
+                                return false
+                            }
+                        }
+                    }
+                    
+                    return true
+                }
+                
+                guard validPaths2.isEmpty == false else { return [] }
+                let newPaths = validPaths2.map { $0 + [self] }
+                let connectionsWithoutStart = connections.filter { $0.schema != .start }
+                return connectionsWithoutStart.flatMap { $0.routesToEndPart2(existingPaths: newPaths, depth: depth + 1) }
+            case .large:
+                let newPaths = existingPaths.map { $0 + [self] }
+                let connectionsWithoutStart = connections.filter { $0.schema != .start }
+                return connectionsWithoutStart.flatMap { $0.routesToEndPart2(existingPaths: newPaths, depth: depth + 1) }
         }
     }
     
@@ -137,6 +185,9 @@ do {
     
 //    let routes = test.routesToEnd()
 //    routes.count // 10 (correct)
+    
+    let routes2 = test.routesToEndPart2()
+    routes2.count // 24 (too high, should be 36)
 } catch {
     error
 }
