@@ -46,8 +46,21 @@ func day14() {
         
         var copy = input
         
+        var lastDate: Date?
+        
         for i in 1...generations {
-            print("Starting generation \(i)")
+            if let lastDateUnwrapped = lastDate {
+                let date = Date()
+                let difference =  date.timeIntervalSinceReferenceDate - lastDateUnwrapped.timeIntervalSinceReferenceDate
+                print("Starting generation \(i) at \(date) (took \(difference) seconds)")
+                // Increasing by a factor of 4 each time
+                lastDate = date
+            } else {
+                let date = Date()
+                print("Starting generation \(i) at \(date)")
+                lastDate = date
+            }
+            
             copy = nextGeneration(after: copy, using: rules)
         }
         
