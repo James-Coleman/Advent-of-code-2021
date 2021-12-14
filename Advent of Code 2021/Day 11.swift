@@ -138,6 +138,23 @@ extension Octopus {
         
         return sum
     }
+    
+    static func firstSimultaneousFlash(of octopuses: [[Octopus]]) -> Int {
+        var generation = 0
+        
+        let totalOctopusCount = octopuses.reduce(0) { soFar, next in
+            soFar + next.count
+        }
+        
+        var flashCount = 0
+        
+        while flashCount != totalOctopusCount {
+            flashCount = increment(octopuses: octopuses)
+            generation += 1
+        }
+        
+        return generation
+    }
 
     static func factory(input: String) -> [[Octopus]] {
         let octopuses = input
@@ -184,6 +201,23 @@ extension Octopus: CustomStringConvertible {
 }
 
 func day11() {
+    let exampleInput = """
+        5483143223
+        2745854711
+        5264556173
+        6141336146
+        6357385478
+        4167524645
+        2176841721
+        6882881134
+        4846848554
+        5283751526
+        """
+    
+//    let exampleOctopuses = Octopus.factory(input: exampleInput)
+    
+//    print(Octopus.firstSimultaneousFlash(of: exampleOctopuses)) // 195 (correct)
+    
     let puzzleInput = """
         4134384626
         7114585257
@@ -199,7 +233,9 @@ func day11() {
     
     let puzzleOctopuses = Octopus.factory(input: puzzleInput)
     
-    let count = Octopus.flasherCount(of: puzzleOctopuses, after: 100)
+//    let count = Octopus.flasherCount(of: puzzleOctopuses, after: 100)
     
-    print(count) // 1725 (correct)
+//    print(count) // 1725 (correct)
+    
+    print(Octopus.firstSimultaneousFlash(of: puzzleOctopuses)) // 308 (correct)
 }
