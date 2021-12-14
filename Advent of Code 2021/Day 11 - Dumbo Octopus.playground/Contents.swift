@@ -13,25 +13,99 @@ extension Collection {
 }
 
 class Octopus {
+    let id = UUID()
+    
     var energyLevel: Int
-    var neighbours: [Octopus]
+    
+    var neighbours: [Octopus] = []
+    
+    var incrementAmount = 0
+    
+    var incrementedBy: Set<Octopus> = []
     
     init(energyLevel: Int) {
         self.energyLevel = energyLevel
-        self.neighbours = []
+    }
+    
+    /**
+     - returns: `true` if the new value will mean the Octopus is flashing
+     */
+    func prepareNextStep() -> Bool {
+//        incrementAmount += 1 // This is now done by the static func before looping this function
+        
+        if energyLevel + incrementAmount <= 9 {
+            let highEnergyNeighbours = Set(neighbours.filter { $0.energyLevel + $0.incrementAmount >= 9 })
+            let notYetUsedToIncrement = highEnergyNeighbours.subtracting(incrementedBy)
+            
+            incrementAmount += notYetUsedToIncrement.count
+            
+            incrementedBy.formUnion(notYetUsedToIncrement)
+            
+            return energyLevel + incrementAmount > 9
+        }
+        
+        return false
+    }
+    
+    func commitNextStep() {
+        let total = energyLevel + incrementAmount
+        
+        if total > 9 {
+            energyLevel = 0
+        } else {
+            energyLevel = total
+        }
+        
+        incrementAmount = 0
+        
+        incrementedBy = []
+    }
+}
+
+extension Octopus: Hashable {
+    static func ==(lhs: Octopus, rhs: Octopus) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
 
 extension Octopus {
     
-    static func nextStep(after octopuses: [[Octopus]]) -> [[Octopus]] {
+    static func increment(octopuses: [[Octopus]]) {
         // Make an [[Int]] of energy levels to increase by?
         
-        var octopuses = octopuses
+        for line in octopuses {
+            for octopus in line {
+                octopus.incrementAmount += 1
+            }
+        }
         
+        var someoneFlashed = false
         
+        repeat {
+            var someoneLocallyFlashed = false
+            
+            for line in octopuses {
+                for octopus in line {
+                    let result = octopus.prepareNextStep()
+                    
+                    if result {
+                        someoneLocallyFlashed = true
+                    }
+                }
+            }
+            
+            someoneFlashed = someoneLocallyFlashed
+        } while someoneFlashed
         
-        return octopuses
+        for line in octopuses {
+            for octopus in line {
+                octopus.commitNextStep()
+            }
+        }
     }
     
     static func factory(input: String) -> [[Octopus]] {
@@ -87,5 +161,44 @@ let detailedExample = """
     """
 
 let detailedExampleOctopuses = Octopus.factory(input: detailedExample)
-
 Octopus.debugPrint(detailedExampleOctopuses)
+Octopus.increment(octopuses: detailedExampleOctopuses)
+Octopus.debugPrint(detailedExampleOctopuses) // correct
+Octopus.increment(octopuses: detailedExampleOctopuses)
+Octopus.debugPrint(detailedExampleOctopuses) // correct
+
+let largerExample = """
+    5483143223
+    2745854711
+    5264556173
+    6141336146
+    6357385478
+    4167524645
+    2176841721
+    6882881134
+    4846848554
+    5283751526
+    """
+
+let largerExampleOctopuses = Octopus.factory(input: largerExample)
+Octopus.debugPrint(largerExampleOctopuses)
+Octopus.increment(octopuses: largerExampleOctopuses)
+Octopus.debugPrint(largerExampleOctopuses)
+Octopus.increment(octopuses: largerExampleOctopuses)
+Octopus.debugPrint(largerExampleOctopuses)
+//Octopus.increment(octopuses: largerExampleOctopuses)
+//Octopus.debugPrint(largerExampleOctopuses)
+//Octopus.increment(octopuses: largerExampleOctopuses)
+//Octopus.debugPrint(largerExampleOctopuses)
+//Octopus.increment(octopuses: largerExampleOctopuses)
+//Octopus.debugPrint(largerExampleOctopuses)
+//Octopus.increment(octopuses: largerExampleOctopuses)
+//Octopus.debugPrint(largerExampleOctopuses)
+//Octopus.increment(octopuses: largerExampleOctopuses)
+//Octopus.debugPrint(largerExampleOctopuses)
+//Octopus.increment(octopuses: largerExampleOctopuses)
+//Octopus.debugPrint(largerExampleOctopuses)
+//Octopus.increment(octopuses: largerExampleOctopuses)
+//Octopus.debugPrint(largerExampleOctopuses)
+//Octopus.increment(octopuses: largerExampleOctopuses)
+//Octopus.debugPrint(largerExampleOctopuses)
