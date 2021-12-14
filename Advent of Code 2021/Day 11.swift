@@ -1,16 +1,11 @@
+//
+//  Day 11.swift
+//  Advent of Code 2021
+//
+//  Created by James Coleman on 14/12/2021.
+//
+
 import Foundation
-
-var greeting = "Hello, playground"
-
-extension Collection {
-    subscript (safe index: Index) -> Element? {
-        if indices.contains(index) {
-            return self[index]
-        } else {
-            return nil
-        }
-    }
-}
 
 class Octopus {
     let id = UUID()
@@ -188,56 +183,23 @@ extension Octopus: CustomStringConvertible {
     var description: String { String(energyLevel) }
 }
 
-let detailedExample = """
-    11111
-    19991
-    19191
-    19991
-    11111
-    """
-
-let detailedExampleOctopuses = Octopus.factory(input: detailedExample)
-Octopus.debugPrint(detailedExampleOctopuses)
-Octopus.increment(octopuses: detailedExampleOctopuses)
-Octopus.debugPrint(detailedExampleOctopuses) // correct
-Octopus.increment(octopuses: detailedExampleOctopuses)
-Octopus.debugPrint(detailedExampleOctopuses) // correct
-
-let largerExample = """
-    5483143223
-    2745854711
-    5264556173
-    6141336146
-    6357385478
-    4167524645
-    2176841721
-    6882881134
-    4846848554
-    5283751526
-    """
-
-let largerExampleOctopuses = Octopus.factory(input: largerExample)
-Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses) // correct
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses) // correct
-//
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-
-Octopus.flasherCount(of: largerExampleOctopuses, after: 10, debugPrint: true) // 204 (correct)
+func day11() {
+    let puzzleInput = """
+        4134384626
+        7114585257
+        1582536488
+        4865715538
+        5733423513
+        8532144181
+        1288614583
+        2248711141
+        6415871681
+        7881531438
+        """
+    
+    let puzzleOctopuses = Octopus.factory(input: puzzleInput)
+    
+    let count = Octopus.flasherCount(of: puzzleOctopuses, after: 100)
+    
+    print(count) // 1725 (correct)
+}
