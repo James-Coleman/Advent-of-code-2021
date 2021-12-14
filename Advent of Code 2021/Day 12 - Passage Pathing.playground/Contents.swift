@@ -125,9 +125,9 @@ class Cave: Hashable {
             case .small:
                 // Stop if the array already contains 2 of the same small cave and self
                 
-                let validPaths2 = existingPaths.filter { array in
+                let validPaths = existingPaths.filter { array in
                     for cave in array {
-                        let count = array.filter { $0 == cave }.count
+                        let count = array.filter { $0 == cave && $0.schema == .small }.count
                         
                         if count == 2 {
                             // If the array already contains self, we can't add it again
@@ -140,8 +140,8 @@ class Cave: Hashable {
                     return true
                 }
                 
-                guard validPaths2.isEmpty == false else { return [] }
-                let newPaths = validPaths2.map { $0 + [self] }
+                guard validPaths.isEmpty == false else { return [] }
+                let newPaths = validPaths.map { $0 + [self] }
                 let connectionsWithoutStart = connections.filter { $0.schema != .start }
                 return connectionsWithoutStart.flatMap { $0.routesToEndPart2(existingPaths: newPaths, depth: depth + 1) }
             case .large:
@@ -187,7 +187,7 @@ do {
 //    routes.count // 10 (correct)
     
     let routes2 = test.routesToEndPart2()
-    routes2.count // 24 (too high, should be 36)
+    routes2.count // 36 (correct)
 } catch {
     error
 }

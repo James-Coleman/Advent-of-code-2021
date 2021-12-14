@@ -108,6 +108,54 @@ class Cave: Hashable {
         }
     }
     
+    func routesToEndPart2(existingPaths: [[Cave]] = [], depth: Int = 0) -> [[Cave]] {
+        guard depth < 30 else { return [] } // (was meant to be) Protection against infinite loop
+        
+//        for path in existingPaths {
+//            print(path, depth)
+//        }
+        
+        switch schema {
+            case .start:
+                guard existingPaths.isEmpty else { return [] }
+                let starterPaths = connections.flatMap { $0.routesToEndPart2(existingPaths: [[self]], depth: depth + 1) }
+                return starterPaths
+            case .end:
+                guard existingPaths.isEmpty == false else { return [] }
+                let finalPaths = existingPaths.map { $0 + [self] }
+                for path in finalPaths {
+                    print(path, depth, "(final)")
+                }
+                return finalPaths
+            case .small:
+                // Stop if the array already contains 2 of the same small cave and self
+                
+                let validPaths = existingPaths.filter { array in
+                    for cave in array {
+                        let count = array.filter { $0 == cave && $0.schema == .small }.count
+                        
+                        if count == 2 {
+                            // If the array already contains self, we can't add it again
+                            if array.contains(self) {
+                                return false
+                            }
+                        }
+                    }
+                    
+                    return true
+                }
+                
+                guard validPaths.isEmpty == false else { return [] }
+                let newPaths = validPaths.map { $0 + [self] }
+                let connectionsWithoutStart = connections.filter { $0.schema != .start }
+                return connectionsWithoutStart.flatMap { $0.routesToEndPart2(existingPaths: newPaths, depth: depth + 1) }
+            case .large:
+                let newPaths = existingPaths.map { $0 + [self] }
+                let connectionsWithoutStart = connections.filter { $0.schema != .start }
+                return connectionsWithoutStart.flatMap { $0.routesToEndPart2(existingPaths: newPaths, depth: depth + 1) }
+        }
+    }
+    
     func add(connection: Cave) {
         self.connections.insert(connection)
         connection.connections.insert(self)
@@ -155,8 +203,12 @@ func day12() {
 
     do {
         let test = try Cave.factory(input: puzzleInput)
-        let routes = test.routesToEnd()
-        print(routes.count) // 4241 (correct)
+
+        //        let routesPart1 = test.routesToEnd()
+//        print(routesPart1.count) // 4241 (correct)
+        
+        let routesPart2 = test.routesToEndPart2()
+        print(routesPart2.count) // 122134 (correct)
     } catch {
         error
     }
