@@ -21,8 +21,6 @@ class Octopus {
     
     var incrementAmount = 0
     
-    var incrementedBy: Set<Octopus> = []
-    
     var affectedNeighbours: Set<Octopus> = []
     
     init(energyLevel: Int) {
@@ -30,29 +28,9 @@ class Octopus {
     }
     
     /**
-     - returns: `true` if the new value will mean the Octopus is flashing
+     - returns: `true` if a new neighbour was made to flash.
      */
-    func prepareNextStep() -> Bool {
-//        incrementAmount += 1 // This is now done by the static func before looping this function
-        
-        if energyLevel + incrementAmount <= 9 {
-            let highEnergyNeighbours = Set(neighbours.filter { $0.energyLevel + $0.incrementAmount >= 9 })
-            let notYetUsedToIncrement = highEnergyNeighbours.subtracting(incrementedBy)
-            
-            incrementAmount += notYetUsedToIncrement.count
-            
-            incrementedBy.formUnion(notYetUsedToIncrement)
-            
-            return energyLevel + incrementAmount > 9
-        }
-        
-        return false
-    }
-    
-    // Better for the advanced example but the basic example has reverted
     func affectNeighbours() -> Bool {
-        // haveAffectedNeighbours?
-        
         if energyLevel + incrementAmount > 9 {
             var madeSomeoneFlash = false
             
@@ -86,8 +64,7 @@ class Octopus {
         }
         
         incrementAmount = 0
-        
-        incrementedBy = []
+        affectedNeighbours = []
     }
 }
 
@@ -104,8 +81,6 @@ extension Octopus: Hashable {
 extension Octopus {
     
     static func increment(octopuses: [[Octopus]]) {
-        // Make an [[Int]] of energy levels to increase by?
-        
         for line in octopuses {
             for octopus in line {
                 octopus.incrementAmount += 1
@@ -119,7 +94,6 @@ extension Octopus {
             
             for line in octopuses {
                 for octopus in line {
-//                    let result = octopus.prepareNextStep()
                     let result = octopus.affectNeighbours()
                     
                     if result {
@@ -213,22 +187,25 @@ let largerExample = """
 let largerExampleOctopuses = Octopus.factory(input: largerExample)
 Octopus.debugPrint(largerExampleOctopuses)
 Octopus.increment(octopuses: largerExampleOctopuses)
+Octopus.debugPrint(largerExampleOctopuses) // correct
+Octopus.increment(octopuses: largerExampleOctopuses)
+Octopus.debugPrint(largerExampleOctopuses) // correct
+
+Octopus.increment(octopuses: largerExampleOctopuses)
 Octopus.debugPrint(largerExampleOctopuses)
 Octopus.increment(octopuses: largerExampleOctopuses)
 Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
-//Octopus.increment(octopuses: largerExampleOctopuses)
-//Octopus.debugPrint(largerExampleOctopuses)
+Octopus.increment(octopuses: largerExampleOctopuses)
+Octopus.debugPrint(largerExampleOctopuses)
+Octopus.increment(octopuses: largerExampleOctopuses)
+Octopus.debugPrint(largerExampleOctopuses)
+Octopus.increment(octopuses: largerExampleOctopuses)
+Octopus.debugPrint(largerExampleOctopuses)
+Octopus.increment(octopuses: largerExampleOctopuses)
+Octopus.debugPrint(largerExampleOctopuses)
+Octopus.increment(octopuses: largerExampleOctopuses)
+Octopus.debugPrint(largerExampleOctopuses)
+Octopus.increment(octopuses: largerExampleOctopuses)
+Octopus.debugPrint(largerExampleOctopuses)
+
+
