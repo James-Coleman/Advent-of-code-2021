@@ -23,6 +23,8 @@ class Octopus {
     
     var incrementedBy: Set<Octopus> = []
     
+    var affectedNeighbours: Set<Octopus> = []
+    
     init(energyLevel: Int) {
         self.energyLevel = energyLevel
     }
@@ -42,6 +44,33 @@ class Octopus {
             incrementedBy.formUnion(notYetUsedToIncrement)
             
             return energyLevel + incrementAmount > 9
+        }
+        
+        return false
+    }
+    
+    // Better for the advanced example but the basic example has reverted
+    func affectNeighbours() -> Bool {
+        // haveAffectedNeighbours?
+        
+        if energyLevel + incrementAmount > 9 {
+            var madeSomeoneFlash = false
+            
+            let notYetFlashing = Set(neighbours.filter { $0.energyLevel + $0.incrementAmount <= 9 })
+            
+            let unaffectedNeighbours = notYetFlashing.subtracting(affectedNeighbours)
+            
+            for neighbour in unaffectedNeighbours {
+                neighbour.incrementAmount += 1
+                
+                if neighbour.energyLevel + neighbour.incrementAmount > 9 {
+                    madeSomeoneFlash = true
+                }
+            }
+            
+            affectedNeighbours.formUnion(unaffectedNeighbours)
+            
+            return madeSomeoneFlash
         }
         
         return false
@@ -90,7 +119,8 @@ extension Octopus {
             
             for line in octopuses {
                 for octopus in line {
-                    let result = octopus.prepareNextStep()
+//                    let result = octopus.prepareNextStep()
+                    let result = octopus.affectNeighbours()
                     
                     if result {
                         someoneLocallyFlashed = true
