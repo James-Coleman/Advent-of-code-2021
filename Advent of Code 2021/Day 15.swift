@@ -1,16 +1,11 @@
+//
+//  Day 15.swift
+//  Advent of Code 2021
+//
+//  Created by James Coleman on 15/12/2021.
+//
+
 import Foundation
-
-var greeting = "Hello, playground"
-
-extension Collection {
-    subscript (safe index: Index) -> Element? {
-        if indices.contains(index) {
-            return self[index]
-        } else {
-            return nil
-        }
-    }
-}
 
 class Position {
     let coordinate: CGPoint
@@ -71,6 +66,10 @@ extension Position {
     }
 }
 
+extension Position: CustomStringConvertible {
+    var description: String { "\(coordinate.x) \(coordinate.y) (\(score))" }
+}
+
 enum PositionRouter {
     /// Array of positions
     typealias Route = [Position]
@@ -80,6 +79,7 @@ enum PositionRouter {
         case nowhereToGo(soFar: Route)
     }
     
+    /*
     static func naiveRoute(from positions: [Route]) throws -> Route {
         guard
             let firstRow = positions.first,
@@ -111,6 +111,7 @@ enum PositionRouter {
         
         return route
     }
+ */
     
     static func recursiveRouter(from positions: [Route], soFar: Route = []) throws -> [Route]? {
         guard
@@ -130,38 +131,50 @@ enum PositionRouter {
         if nextPositions.isEmpty {
             return nil
         } else {
-            let test = try nextPositions.compactMap { position -> [Route]? in
+            let newRoutes = try nextPositions.compactMap { position -> [Route]? in
                 if position == lastPosition {
-                    return [soFar + [position]]
+                    let completeRoute = [route + [position]]
+                    
+                    let score = completeRoute.reduce(0) { soFar, next in
+                        soFar + next.map { $0.score }.reduce(0, +)
+                    }
+                    
+                    print("Found a solution with score \(score)\n\(completeRoute)")
+                    
+                    return completeRoute
                 } else {
-                    let newRoute = soFar + [position]
+                    let newRoute = route + [position]
                     
                     return try recursiveRouter(from: positions, soFar: newRoute)
                 }
             }
             
-            return test.flatMap { $0 }
+            return newRoutes.flatMap { $0 }
         }
     }
 }
 
-let exampleInput = """
-    1163751742
-    1381373672
-    2136511328
-    3694931569
-    7463417111
-    1319128137
-    1359912421
-    3125421639
-    1293138521
-    2311944581
-    """
+func day15() {
+    let exampleInput = """
+        1163751742
+        1381373672
+        2136511328
+        3694931569
+        7463417111
+        1319128137
+        1359912421
+        3125421639
+        1293138521
+        2311944581
+        """
 
-do {
-    let examplePositions = try Position.factory(input: exampleInput)
-//    let naiveRoute = try PositionRouter.naiveRoute(from: examplePositions)
-    let recursiveRoutes = try PositionRouter.recursiveRouter(from: examplePositions)
-} catch {
-    error
+    do {
+        let examplePositions = try Position.factory(input: exampleInput)
+    //    let naiveRoute = try PositionRouter.naiveRoute(from: examplePositions)
+        let recursiveRoutes = try PositionRouter.recursiveRouter(from: examplePositions)
+        recursiveRoutes?.forEach { print($0) }
+    } catch {
+        print(error)
+    }
+
 }
