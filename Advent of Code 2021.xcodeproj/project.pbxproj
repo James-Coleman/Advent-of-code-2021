@@ -33,6 +33,7 @@
 		C641BA932764788200F5F964 /* Day 11 - Dumbo Octopus.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 11 - Dumbo Octopus.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C641BA9427686E6800F5F964 /* Day 14 - Extended Polymerization.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 14 - Extended Polymerization.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C67E57272768844E003CA5C3 /* Day 14.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day 14.swift"; sourceTree = "<group>"; };
+		C67FECE32769BF89009A68D4 /* Day 15 - Chiton.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 15 - Chiton.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C68948FE2758BC40003DF504 /* Day 2.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 2.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C689EFCF275C172E006901E2 /* Day 4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day 4.swift"; sourceTree = "<group>"; };
 		C689EFD1275C874C006901E2 /* Day 5.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 5.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -104,6 +105,7 @@
 				C6CF8ADA27676393003E0597 /* Day 12 - Passage Pathing.playground */,
 				C6B1478F276741190014F185 /* Day 13 - Transparent Origami.playground */,
 				C641BA9427686E6800F5F964 /* Day 14 - Extended Polymerization.playground */,
+				C67FECE32769BF89009A68D4 /* Day 15 - Chiton.playground */,
 			);
 			path = "Advent of Code 2021";
 			sourceTree = "<group>";
