@@ -79,7 +79,30 @@ enum PositionRouter {
         case nowhereToGo(soFar: Route)
     }
     
-    /*
+    static func debugPrint(_ route: Route, from positions: [[Position]]) {
+        var string = ""
+        
+        for line in positions {
+            for position in line {
+                if route.contains(position) {
+                    string += "■"
+                } else {
+                    string += "\(position.score)"
+                }
+            }
+            
+            string += "\n"
+        }
+        
+        print(string)
+        
+        let score = route.reduce(0) { soFar, next in
+            soFar + next.score
+        }
+        
+        print("Score was \(score)")
+    }
+    
     static func naiveRoute(from positions: [Route]) throws -> Route {
         guard
             let firstRow = positions.first,
@@ -87,11 +110,6 @@ enum PositionRouter {
             let lastRow = positions.last,
             let lastPosition = lastRow.last
         else { throw Error.emptyPositions }
-        
-        // Might not need this if we use route.contains(_)
-//        let totalCount = positions.reduce(0) { soFar, next in
-//            soFar + next.count
-//        }
         
         var route = [startingPosition]
         
@@ -103,15 +121,14 @@ enum PositionRouter {
                 .sorted(by: { $0.score < $1.score })
                 .first
             
-            guard let next = next else { throw Error.nowhereToGo(soFar: route) }
+            guard let nextPosition = next else { throw Error.nowhereToGo(soFar: route) }
             
-            route += [next]
-            currentPosition = next
+            route += [nextPosition]
+            currentPosition = nextPosition
         }
         
         return route
     }
- */
     
     static func recursiveRouter(from positions: [Route], soFar: Route = []) throws -> [Route]? {
         guard
@@ -170,9 +187,17 @@ func day15() {
 
     do {
         let examplePositions = try Position.factory(input: exampleInput)
-    //    let naiveRoute = try PositionRouter.naiveRoute(from: examplePositions)
-        let recursiveRoutes = try PositionRouter.recursiveRouter(from: examplePositions)
-        recursiveRoutes?.forEach { print($0) }
+        
+        do {
+            let naiveRoute = try PositionRouter.naiveRoute(from: examplePositions)
+        } catch let PositionRouter.Error.nowhereToGo(soFar) {
+            PositionRouter.debugPrint(soFar, from: examplePositions)
+        } catch {
+            print(error)
+        }
+        
+//        let recursiveRoutes = try PositionRouter.recursiveRouter(from: examplePositions)
+//        recursiveRoutes?.forEach { print($0) }
     } catch {
         print(error)
     }
