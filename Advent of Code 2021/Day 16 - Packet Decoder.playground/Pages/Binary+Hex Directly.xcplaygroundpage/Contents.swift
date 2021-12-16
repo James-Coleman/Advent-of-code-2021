@@ -158,10 +158,13 @@ do {
     let example3 = try Packet(string: "EE00D40C823060")
     print(example3)
     
-//    print(String(Int.max, radix: 16).uppercased()) // 7FFFFFFFFFFFFFFF
+//    print(String( Int.max, radix: 16).uppercased()) // 7FFFFFFFFFFFFFFF
+//    print(String(UInt.max, radix: 16).uppercased()) // FFFFFFFFFFFFFFFF
     
     // 7FFFFFFFFFFFFFFF
+    // FFFFFFFFFFFFFFFF
     // 8A004A801A8002F478
+    
     
     let example4 = try Packet(string: "8A004A801A8002F478")
     print(String(reflecting: example4))
