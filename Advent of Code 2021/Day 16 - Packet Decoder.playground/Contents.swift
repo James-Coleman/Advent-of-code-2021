@@ -24,12 +24,30 @@ Int("011111100101", radix: 2)
 Int("D2FE28", radix: 16) // 13827624
 String(13827624, radix: 2) // "110100101111111000101000"
 
+extension String {
+    mutating func pad(with padding: String, untilDivisibleBy mod: Int) {
+        var newString = self
+        
+        while newString.count % mod != 0 {
+            newString = padding + newString
+        }
+        
+        self = newString
+    }
+    
+    mutating func poppingFirst(_ count: Int) -> String {
+        guard let splitIndex = index(startIndex, offsetBy: count, limitedBy: endIndex) else { return self }
+        
+        let popped = self[..<splitIndex]
+        
+        self = String(self[splitIndex...])
+        
+        return String(popped)
+    }
+}
+
 enum PacketError: Error {
     case stringIsNotValidHexadecimal(String)
-    case versionBinaryNotInt(Substring)
-    case typeIDBinaryNotInt(Substring)
-    case literalValueBinaryNotInt(String)
-    case noContinueDigit
 }
 
 struct LiteralPacket {
@@ -41,58 +59,28 @@ struct LiteralPacket {
     init(string: String) throws {
         guard let int = Int(string, radix: 16) else { throw PacketError.stringIsNotValidHexadecimal(string) }
         
-        let binaryString = String(int, radix: 2)
+        var binaryString = String(int, radix: 2)
+        binaryString.pad(with: "0", untilDivisibleBy: 4)
         
-//        let versionSlice = string[...2]
-        let startIndex = binaryString.startIndex
-        let versionEndIndex = binaryString.index(startIndex, offsetBy: 2)
-        let versionBinary = binaryString[...versionEndIndex]
-//        print(versionBinary)
-        guard let versionInt = Int(versionBinary, radix: 2) else { throw PacketError.versionBinaryNotInt(versionBinary) }
-        
-        let typeIDStartIndex = binaryString.index(versionEndIndex, offsetBy: 1)
-        let typeIDEndIndex = binaryString.index(typeIDStartIndex, offsetBy: 2)
-        
-        let typeIDBinary = binaryString[typeIDStartIndex...typeIDEndIndex]
-        
-//        print(typeIDBinary)
-        
-        guard let typeIDInt = Int(typeIDBinary, radix: 2) else { throw PacketError.typeIDBinaryNotInt(typeIDBinary) }
+        let versionBinary = binaryString.poppingFirst(3)
+        let versionInt = Int(versionBinary, radix: 2)!
+
+        let typeIDBinary = binaryString.poppingFirst(3)
+        let typeIDInt = Int(typeIDBinary, radix: 2)!
         
         var literalValueString = ""
         
-        var digitsStartIndex = binaryString.index(typeIDEndIndex, offsetBy: 1)
-        
-        var digitsEndIndex = binaryString.index(digitsStartIndex, offsetBy: 4)
-        
-        var continueDigit: Character = "1"
+        var continueDigit = "1"
         
         while continueDigit == "1" {
-            var fiveBits = binaryString[digitsStartIndex...digitsEndIndex]
-//            print(fiveBits)
+            var fiveBits = binaryString.poppingFirst(5)
             
-            guard let continueDigitLocal = fiveBits.popFirst() else { throw PacketError.noContinueDigit }
-            
-//            print(continueDigitLocal)
-            
-            continueDigit = continueDigitLocal
-            
-//            print(fiveBits)
+            continueDigit = fiveBits.poppingFirst(1)
             
             literalValueString += fiveBits
-            
-            guard
-                let nextStartIndex = binaryString.index(digitsStartIndex, offsetBy: 5, limitedBy: binaryString.endIndex),
-                let nextEndIndex = binaryString.index(digitsEndIndex, offsetBy: 5, limitedBy: binaryString.endIndex)
-            else { break }
-            
-            digitsStartIndex = nextStartIndex
-            digitsEndIndex = nextEndIndex
         }
         
-//        print(literalValueString)
-        
-        guard let literalValueInt = Int(literalValueString, radix: 2) else { throw PacketError.literalValueBinaryNotInt(literalValueString) }
+        let literalValueInt = Int(literalValueString, radix: 2)!
         
         version = versionInt
         typeID = typeIDInt
@@ -110,34 +98,31 @@ do {
 struct OperatorPacket {
     let version: Int
     let typeID: Int
-    let lengthTypeID: Int
+    let lengthTypeID: String
     let subpacketLength: Int
     
     init(string: String) throws {
         guard let int = Int(string, radix: 16) else { throw PacketError.stringIsNotValidHexadecimal(string) }
         
-        let binaryString = String(int, radix: 2)
+        var binaryString = String(int, radix: 2)
+        binaryString.pad(with: "0", untilDivisibleBy: 4)
         
-//        let versionSlice = string[...2]
-        let startIndex = binaryString.startIndex
-        let versionEndIndex = binaryString.index(startIndex, offsetBy: 2)
-        let versionBinary = binaryString[...versionEndIndex]
-//        print(versionBinary)
-        guard let versionInt = Int(versionBinary, radix: 2) else { throw PacketError.versionBinaryNotInt(versionBinary) }
+        let versionBinary = binaryString.poppingFirst(3)
+        let versionInt = Int(versionBinary, radix: 2)!
         
-        let typeIDStartIndex = binaryString.index(versionEndIndex, offsetBy: 1)
-        let typeIDEndIndex = binaryString.index(typeIDStartIndex, offsetBy: 2)
+        let typeIDBinary = binaryString.poppingFirst(3)
+        let typeIDInt = Int(typeIDBinary, radix: 2)!
         
-        let typeIDBinary = binaryString[typeIDStartIndex...typeIDEndIndex]
+        let lengthTypeIDBinary = binaryString.poppingFirst(1)
+        let lengthLength = lengthTypeIDBinary == "0" ? 15 : 11
         
-//        print(typeIDBinary)
-        
-        guard let typeIDInt = Int(typeIDBinary, radix: 2) else { throw PacketError.typeIDBinaryNotInt(typeIDBinary) }
+        let subPacketLengthBinary = binaryString.poppingFirst(lengthLength)
+        let subPacketLengthInt = Int(subPacketLengthBinary, radix: 2)!
         
         version = versionInt
         typeID = typeIDInt
-        lengthTypeID = 0
-        subpacketLength = 0
+        lengthTypeID = lengthTypeIDBinary
+        subpacketLength = subPacketLengthInt
     }
 }
 
