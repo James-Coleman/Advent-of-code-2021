@@ -140,18 +140,59 @@ extension PairCount {
 let exampleStep1 = nextStep(from: exampleTemplatePairs, rules: examplePolyerRules)
 let debugStep1 = polymerPairs(from: "NCNBCHB")
 exampleStep1 == debugStep1
-//exampleStep1.debugSorted()
-//debugStep1.debugSorted()
 let exampleStep2 = nextStep(from: exampleStep1, rules: examplePolyerRules)
 let debugStep2 = polymerPairs(from: "NBCCNBBBCBHCB")
 exampleStep2 == debugStep2
-//exampleStep2.debugSorted()
-//debugStep2.debugSorted()
 let exampleStep3 = nextStep(from: exampleStep2, rules: examplePolyerRules)
 let debugStep3 = polymerPairs(from: "NBBBCNCCNBBNBNBBCHBHHBCHB")
 exampleStep3 == debugStep3
-exampleStep3.debugSorted()
-debugStep3.debugSorted()
 let exampleStep4 = nextStep(from: exampleStep3, rules: examplePolyerRules)
 let debugStep4 = polymerPairs(from: "NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB")
 exampleStep4 == debugStep4
+
+func generation(_ generation: Int, from input: PairCount, rules: Rules) -> PairCount {
+    var pairCount = input
+    
+    for _ in 1...generation {
+        pairCount = nextStep(from: pairCount, rules: rules)
+    }
+    
+    return pairCount
+}
+
+let exampleGeneration10 = generation(10, from: exampleTemplatePairs, rules: examplePolyerRules)
+
+extension PairCount {
+    var elementCount: [Character: Int] {
+        var dict = [Character: Int]()
+        
+        for (key, value) in self {
+            let firstCharacter = key.first
+            let secondCharacter = key.second
+            
+            if let count = dict[firstCharacter] {
+                dict[firstCharacter] = count + value
+            } else {
+                dict[firstCharacter] = value
+            }
+            
+            if let count = dict[secondCharacter] {
+                dict[secondCharacter] = count + value
+            } else {
+                dict[secondCharacter] = value
+            }
+        }
+        
+        return dict
+    }
+}
+
+let exampleElementCount = exampleGeneration10.elementCount
+
+if let nCount = exampleElementCount["N"], let hCount = exampleElementCount["H"], let bCount = exampleElementCount["B"], let cCount = exampleElementCount["C"] {
+    // If it's even does that mean it wasn't an end Character?
+    nCount / 2
+    hCount / 2
+    bCount / 2
+    cCount / 2
+}
