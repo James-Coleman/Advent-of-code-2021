@@ -243,6 +243,8 @@ struct OperatorPacket {
                 subPackets += [nextSubPacket]
                 
                 subtractedCharacters = startingCount - remainingString.count
+                
+                binaryString = remainingString
             }
         } else {
             // Next 11 bits are a number that represents the number of sub-packets immediately contained by this packet.
