@@ -100,13 +100,6 @@ struct LiteralPacket {
     }
 }
 
-do {
-    let test = try Packet(string: "D2FE28")
-    print(test)
-} catch {
-    error
-}
-
 struct OperatorPacket {
     let version: Int
     let typeID: Int
@@ -156,8 +149,14 @@ struct OperatorPacket {
 }
 
 do {
-    let test = try Packet(string: "38006F45291200")
-    print(test)
+    let example1 = try Packet(string: "D2FE28")
+    print(example1)
+    
+    let example2 = try Packet(string: "38006F45291200")
+    print(example2)
+    
+    let example3 = try Packet(string: "EE00D40C823060")
+    print(example3)
 } catch {
     error
 }
