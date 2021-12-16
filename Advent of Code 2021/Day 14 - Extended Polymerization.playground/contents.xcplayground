@@ -3,5 +3,6 @@
     <pages>
         <page name='Algorithm 1'/>
         <page name='Algorithm 2'/>
+        <page name='Algorithm 2 Counting Letters'/>
     </pages>
 </playground>

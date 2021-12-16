@@ -79,7 +79,7 @@ let exampleInput = """
     CN -> C
     """
 
-let examplePolyerRules = polymerRules(from: exampleInput)
+let examplePolymerRules = polymerRules(from: exampleInput)
 
 typealias PairCount = [CharacterPair: Int]
 
@@ -137,16 +137,16 @@ extension PairCount {
     }
 }
 
-let exampleStep1 = nextStep(from: exampleTemplatePairs, rules: examplePolyerRules)
+let exampleStep1 = nextStep(from: exampleTemplatePairs, rules: examplePolymerRules)
 let debugStep1 = polymerPairs(from: "NCNBCHB")
 exampleStep1 == debugStep1
-let exampleStep2 = nextStep(from: exampleStep1, rules: examplePolyerRules)
+let exampleStep2 = nextStep(from: exampleStep1, rules: examplePolymerRules)
 let debugStep2 = polymerPairs(from: "NBCCNBBBCBHCB")
 exampleStep2 == debugStep2
-let exampleStep3 = nextStep(from: exampleStep2, rules: examplePolyerRules)
+let exampleStep3 = nextStep(from: exampleStep2, rules: examplePolymerRules)
 let debugStep3 = polymerPairs(from: "NBBBCNCCNBBNBNBBCHBHHBCHB")
 exampleStep3 == debugStep3
-let exampleStep4 = nextStep(from: exampleStep3, rules: examplePolyerRules)
+let exampleStep4 = nextStep(from: exampleStep3, rules: examplePolymerRules)
 let debugStep4 = polymerPairs(from: "NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB")
 exampleStep4 == debugStep4
 
@@ -160,7 +160,7 @@ func generation(_ generation: Int, from input: PairCount, rules: Rules) -> PairC
     return pairCount
 }
 
-let exampleGeneration10 = generation(10, from: exampleTemplatePairs, rules: examplePolyerRules)
+let exampleGeneration10 = generation(10, from: exampleTemplatePairs, rules: examplePolymerRules)
 
 extension PairCount {
     var elementCount: [Character: Int] {
