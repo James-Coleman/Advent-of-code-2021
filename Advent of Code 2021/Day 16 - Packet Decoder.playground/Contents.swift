@@ -24,21 +24,22 @@ Int("011111100101", radix: 2)
 Int("D2FE28", radix: 16) // 13827624
 String(13827624, radix: 2) // "110100101111111000101000"
 
+enum PacketError: Error {
+    case stringIsNotValidHexadecimal(String)
+    case versionBinaryNotInt(Substring)
+    case typeIDBinaryNotInt(Substring)
+    case literalValueBinaryNotInt(String)
+    case noContinueDigit
+}
+
 struct LiteralPacket {
-    enum Error: Swift.Error {
-        case stringIsNotValidHexadecimal(String)
-        case versionBinaryNotInt(Substring)
-        case typeIDBinaryNotInt(Substring)
-        case literalValueBinaryNotInt(String)
-        case noContinueDigit
-    }
     
     let version: Int
     let typeID: Int // Might not need this because the packet type ID for a literal packet will always be 4
     let literalValue: Int
     
     init(string: String) throws {
-        guard let int = Int(string, radix: 16) else { throw Error.stringIsNotValidHexadecimal(string) }
+        guard let int = Int(string, radix: 16) else { throw PacketError.stringIsNotValidHexadecimal(string) }
         
         let binaryString = String(int, radix: 2)
         
@@ -47,7 +48,7 @@ struct LiteralPacket {
         let versionEndIndex = binaryString.index(startIndex, offsetBy: 2)
         let versionBinary = binaryString[...versionEndIndex]
 //        print(versionBinary)
-        guard let versionInt = Int(versionBinary, radix: 2) else { throw Error.versionBinaryNotInt(versionBinary) }
+        guard let versionInt = Int(versionBinary, radix: 2) else { throw PacketError.versionBinaryNotInt(versionBinary) }
         
         let typeIDStartIndex = binaryString.index(versionEndIndex, offsetBy: 1)
         let typeIDEndIndex = binaryString.index(typeIDStartIndex, offsetBy: 2)
@@ -56,7 +57,7 @@ struct LiteralPacket {
         
 //        print(typeIDBinary)
         
-        guard let typeIDInt = Int(typeIDBinary, radix: 2) else { throw Error.typeIDBinaryNotInt(typeIDBinary) }
+        guard let typeIDInt = Int(typeIDBinary, radix: 2) else { throw PacketError.typeIDBinaryNotInt(typeIDBinary) }
         
         var literalValueString = ""
         
@@ -70,7 +71,7 @@ struct LiteralPacket {
             var fiveBits = binaryString[digitsStartIndex...digitsEndIndex]
 //            print(fiveBits)
             
-            guard let continueDigitLocal = fiveBits.popFirst() else { throw Error.noContinueDigit }
+            guard let continueDigitLocal = fiveBits.popFirst() else { throw PacketError.noContinueDigit }
             
 //            print(continueDigitLocal)
             
@@ -91,7 +92,7 @@ struct LiteralPacket {
         
 //        print(literalValueString)
         
-        guard let literalValueInt = Int(literalValueString, radix: 2) else { throw Error.literalValueBinaryNotInt(literalValueString) }
+        guard let literalValueInt = Int(literalValueString, radix: 2) else { throw PacketError.literalValueBinaryNotInt(literalValueString) }
         
         version = versionInt
         typeID = typeIDInt
@@ -112,4 +113,37 @@ struct OperatorPacket {
     let lengthTypeID: Int
     let subpacketLength: Int
     
+    init(string: String) throws {
+        guard let int = Int(string, radix: 16) else { throw PacketError.stringIsNotValidHexadecimal(string) }
+        
+        let binaryString = String(int, radix: 2)
+        
+//        let versionSlice = string[...2]
+        let startIndex = binaryString.startIndex
+        let versionEndIndex = binaryString.index(startIndex, offsetBy: 2)
+        let versionBinary = binaryString[...versionEndIndex]
+//        print(versionBinary)
+        guard let versionInt = Int(versionBinary, radix: 2) else { throw PacketError.versionBinaryNotInt(versionBinary) }
+        
+        let typeIDStartIndex = binaryString.index(versionEndIndex, offsetBy: 1)
+        let typeIDEndIndex = binaryString.index(typeIDStartIndex, offsetBy: 2)
+        
+        let typeIDBinary = binaryString[typeIDStartIndex...typeIDEndIndex]
+        
+//        print(typeIDBinary)
+        
+        guard let typeIDInt = Int(typeIDBinary, radix: 2) else { throw PacketError.typeIDBinaryNotInt(typeIDBinary) }
+        
+        version = versionInt
+        typeID = typeIDInt
+        lengthTypeID = 0
+        subpacketLength = 0
+    }
+}
+
+do {
+    let test = try OperatorPacket(string: "38006F45291200")
+    print(test)
+} catch {
+    error
 }
