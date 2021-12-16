@@ -106,4 +106,10 @@ do {
     error
 }
 
-//func decode(string: String) ->
+struct OperatorPacket {
+    let version: Int
+    let typeID: Int
+    let lengthTypeID: Int
+    let subpacketLength: Int
+    
+}
