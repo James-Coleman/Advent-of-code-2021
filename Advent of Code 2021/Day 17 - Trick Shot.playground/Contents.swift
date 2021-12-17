@@ -104,9 +104,8 @@ enum Launcher {
         /// We can never launch a probe with a higher X velocity than this, otherwise we will overshoot on the first shot.
         let maxX = targetArea.xArea.upperBound
         
-        // Assume only minX for now
         for x in Int(minX)...Int(maxX) {
-            // Start with y = 0
+            print("Starting x \(x)")
             
             let cgFloatX = CGFloat(x)
             var initialYVelocity: CGFloat = 0
@@ -145,12 +144,15 @@ enum Launcher {
                         bestVector = CGVector(dx: cgFloatX, dy: initialYVelocity)
                         
                         print(highestY, bestVector)
+                    } else {
+                        print("Only reached \(localHighestY) starting with \(velocity). Final position \(probe.position)")
                     }
                     
                     initialYVelocity += 1
                     probe = Probe(velocity: CGVector(dx: cgFloatX, dy: initialYVelocity))
                 } else if haveStartedToReachTargetArea {
                     // Used to end up in target area but not any more
+                    
                     break whileTrueLoop
                 } else {
                     // Not yet entered the target area

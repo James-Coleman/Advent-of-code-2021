@@ -122,7 +122,12 @@ func day17() {
                     var probe = Probe(velocity: velocity)
                     
                     guard launchProbeWith(velocity: velocity, towards: targetArea) != nil else {
-                        break
+                        print("Won't reach target area with velocity \(velocity)")
+                        
+                        
+                        initialYVelocity += 1
+                        probe = Probe(velocity: CGVector(dx: cgFloatX, dy: initialYVelocity))
+                        continue
                     }
                     
                     var latestTrajectory = trajectoryOf(probe: probe, towards: targetArea)
@@ -139,6 +144,7 @@ func day17() {
                     
                     if latestTrajectory == .insideTargetArea {
                         if haveStartedToReachTargetArea == false {
+                            print("Reached the target area for the first time with velocity: \(velocity)")
                             haveStartedToReachTargetArea = true
                         }
                         
@@ -146,13 +152,15 @@ func day17() {
                             highestY = localHighestY
                             bestVector = CGVector(dx: cgFloatX, dy: initialYVelocity)
                             
-                            print(highestY, bestVector)
+                            print(highestY, bestVector) // 5460 with (20, 104)
                         }
                         
                         initialYVelocity += 1
                         probe = Probe(velocity: CGVector(dx: cgFloatX, dy: initialYVelocity))
                     } else if haveStartedToReachTargetArea {
                         // Used to end up in target area but not any more
+                        
+                        
                         break whileTrueLoop
                     } else {
                         // Not yet entered the target area
