@@ -10,18 +10,22 @@ struct Probe {
     var velocity: CGVector
 }
 
-extension Probe {
-    mutating func step() {
-        position.x += velocity.dx
-        position.y += velocity.dy
+enum ProbeStepper {
+    static func step(_ probe: Probe) -> Probe {
+        var copy = probe
         
-        if velocity.dx > 0 {
-            velocity.dx -= 1
-        } else if velocity.dx < 0 {
-            velocity.dx += 1
+        copy.position.x += copy.velocity.dx
+        copy.position.y += copy.velocity.dy
+        
+        if copy.velocity.dx > 0 {
+            copy.velocity.dx -= 1
+        } else if copy.velocity.dx < 0 {
+            copy.velocity.dx += 1
         }
         
-        velocity.dy -= 1
+        copy.velocity.dy -= 1
+        
+        return copy
     }
 }
 
@@ -68,7 +72,7 @@ enum Launcher {
         var latestTrajectory = trajectoryOf(probe: probe, towards: targetArea)
         
         while latestTrajectory == .approachingTargetArea {
-            probe.step()
+            probe = ProbeStepper.step(probe)
             numberOfSteps += 1
             
             latestTrajectory = trajectoryOf(probe: probe, towards: targetArea)
@@ -94,49 +98,70 @@ enum Launcher {
      */
     static func highestProbeTo(reach targetArea: TargetArea) -> (highestY: CGFloat, winningVelocity: CGVector) {
         var highestY: CGFloat = 0
+        var bestVector = CGVector(dx: 0, dy: 0)
         
         let minX = minimumXVelocityTo(reach: targetArea.xArea.lowerBound)
         /// We can never launch a probe with a higher X velocity than this, otherwise we will overshoot on the first shot.
         let maxX = targetArea.xArea.upperBound
         
         // Assume only minX for now
-//        for x in Int(minX)...Int(maxX) {
+        for x in Int(minX)...Int(maxX) {
             // Start with y = 0
-        
-        var initialYVelocity: CGFloat = 0
-        
-        whileTrueLoop:
-        while true {
-            var localHighestY: CGFloat = 0
-            var probe = Probe(velocity: CGVector(dx: minX, dy: initialYVelocity))
             
-            var latestTrajectory = trajectoryOf(probe: probe, towards: targetArea)
+            let cgFloatX = CGFloat(x)
+            var initialYVelocity: CGFloat = 0
             
-            while latestTrajectory == .approachingTargetArea {
-                probe.step()
+            var haveStartedToReachTargetArea = false
+            
+            whileTrueLoop:
+            while true {
+                var localHighestY: CGFloat = 0
+                let velocity = CGVector(dx: cgFloatX, dy: initialYVelocity)
+                var probe = Probe(velocity: velocity)
                 
-                if probe.position.y > localHighestY {
-                    localHighestY = probe.position.y
+                guard launchProbeWith(velocity: velocity, towards: targetArea) != nil else {
+                    break
                 }
                 
-                latestTrajectory = trajectoryOf(probe: probe, towards: targetArea)
-            }
-            
-            if latestTrajectory == .insideTargetArea {
-                if localHighestY > highestY {
-                    highestY = localHighestY
+                var latestTrajectory = trajectoryOf(probe: probe, towards: targetArea)
+                
+                while latestTrajectory == .approachingTargetArea {
+                    probe = ProbeStepper.step(probe)
+                    
+                    if probe.position.y > localHighestY {
+                        localHighestY = probe.position.y
+                    }
+                    
+                    latestTrajectory = trajectoryOf(probe: probe, towards: targetArea)
                 }
                 
-                initialYVelocity += 1
-                probe = Probe(velocity: CGVector(dx: minX, dy: initialYVelocity))
-            } else {
-                break whileTrueLoop
+                if latestTrajectory == .insideTargetArea {
+                    if haveStartedToReachTargetArea == false {
+                        haveStartedToReachTargetArea = true
+                    }
+                    
+                    if localHighestY > highestY {
+                        highestY = localHighestY
+                        bestVector = CGVector(dx: cgFloatX, dy: initialYVelocity)
+                        
+                        print(highestY, bestVector)
+                    }
+                    
+                    initialYVelocity += 1
+                    probe = Probe(velocity: CGVector(dx: cgFloatX, dy: initialYVelocity))
+                } else if haveStartedToReachTargetArea {
+                    // Used to end up in target area but not any more
+                    break whileTrueLoop
+                } else {
+                    // Not yet entered the target area
+                    initialYVelocity += 1
+                    probe = Probe(velocity: CGVector(dx: cgFloatX, dy: initialYVelocity))
+                }
             }
+            
         }
-            
-//        }
          
-        return (highestY, CGVector(dx: minX, dy: initialYVelocity - 1)) // Has to be initialYVelocity - 1 because we incremented the initialYVelocity before the failing probe
+        return (highestY, bestVector) // Has to be initialYVelocity - 1 because we incremented the initialYVelocity before the failing probe
     }
 }
 
@@ -151,8 +176,8 @@ Launcher.minimumXVelocityTo(reach: exampleTargetArea.xArea.lowerBound)
 
 Launcher.launchProbeWith(velocity: CGVector(dx: 6, dy: 9), towards: exampleTargetArea)
 
-Launcher.highestProbeTo(reach: exampleTargetArea)
+//Launcher.highestProbeTo(reach: exampleTargetArea)
 
 let puzzleTargetArea = TargetArea(xArea: 206...250, yArea: ClosedRange(uncheckedBounds: (lower: -105, upper: -57)))
 
-//Launcher.highestProbeTo(reach: puzzleTargetArea)
+Launcher.highestProbeTo(reach: puzzleTargetArea) // 1326 (too low)
