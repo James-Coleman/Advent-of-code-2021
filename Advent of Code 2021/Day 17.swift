@@ -180,11 +180,33 @@ func day17() {
              
             return (highestY, bestVector) // Has to be initialYVelocity - 1 because we incremented the initialYVelocity before the failing probe
         }
+        
+        static func allVelocities(toReach targetArea: TargetArea) -> [CGVector] {
+            var velocities = [CGVector]()
+            
+            let minX = minimumXVelocityTo(reach: targetArea.xArea.lowerBound)
+            /// We can never launch a probe with a higher X velocity than this, otherwise we will overshoot on the first shot.
+            let maxX = targetArea.xArea.upperBound
+            
+            for x in Int(minX)...Int(maxX) {
+                for y in -200...200 { // arbitrary numbers
+                    let velocity = CGVector(dx: x, dy: y)
+                    
+                    if launchProbeWith(velocity: velocity, towards: targetArea) != nil {
+                        velocities += [velocity]
+                    }
+                }
+            }
+            
+            return velocities
+        }
     }
     
+    let exampleTargetArea = TargetArea(xArea: 20...30, yArea: ClosedRange(uncheckedBounds: (lower: -10, upper: -5)))
     let puzzleTargetArea = TargetArea(xArea: 206...250, yArea: ClosedRange(uncheckedBounds: (lower: -105, upper: -57)))
 
-    print("Final answer", Launcher.highestProbeTo(reach: puzzleTargetArea))
+//    print("Final answer", Launcher.highestProbeTo(reach: puzzleTargetArea))
     
-    
+//    print(Launcher.allVelocities(toReach: exampleTargetArea).count) // 112 (correct)
+    print(Launcher.allVelocities(toReach: puzzleTargetArea).count) // 3618 (correct)
 }
