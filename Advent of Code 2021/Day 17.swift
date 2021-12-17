@@ -124,7 +124,14 @@ func day17() {
                     guard launchProbeWith(velocity: velocity, towards: targetArea) != nil else {
                         print("Won't reach target area with velocity \(velocity)")
                         
+                        // Currently a bug where it never checks the next x (whileTrueLoop is never broken)
+                        // I think we need to involve haveStartedToReachTargetArea again
+                        // Now that we know the maximum height (5460.0 (20.0, 104.0))
+                        // could we simply use that as the y limit?
                         
+                        // The bug in part 1 showed that after (20.0, 104.0), no other velocity entered the target area.
+                        // Could we take e.g. max dy 200 and assume?
+                        // If we get the wrong answer, raise the limit
                         initialYVelocity += 1
                         probe = Probe(velocity: CGVector(dx: cgFloatX, dy: initialYVelocity))
                         continue

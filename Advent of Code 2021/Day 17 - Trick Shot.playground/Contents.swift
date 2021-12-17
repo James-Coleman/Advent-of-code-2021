@@ -119,7 +119,13 @@ enum Launcher {
                 var probe = Probe(velocity: velocity)
                 
                 guard launchProbeWith(velocity: velocity, towards: targetArea) != nil else {
-                    break
+                    print("Won't reach target area with velocity \(velocity)")
+                    
+                    // Currently a bug where it never checks the next x (whileTrueLoop is never broken)
+                    // I think we need to involve haveStartedToReachTargetArea again
+                    initialYVelocity += 1
+                    probe = Probe(velocity: CGVector(dx: cgFloatX, dy: initialYVelocity))
+                    continue
                 }
                 
                 var latestTrajectory = trajectoryOf(probe: probe, towards: targetArea)
@@ -136,6 +142,7 @@ enum Launcher {
                 
                 if latestTrajectory == .insideTargetArea {
                     if haveStartedToReachTargetArea == false {
+                        print("Reached the target area for the first time with velocity: \(velocity)")
                         haveStartedToReachTargetArea = true
                     }
                     
