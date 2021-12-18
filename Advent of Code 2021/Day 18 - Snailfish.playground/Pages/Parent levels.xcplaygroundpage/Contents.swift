@@ -52,6 +52,42 @@ class SnailFishNumberWrapper {
         self.number = .pair(pair.0, pair.1)
     }
     
+    var nextNumberThatShouldExplode: SnailFishNumberWrapper? {
+        guard case let .pair(outerLeft, outerRight) = number else { return nil }
+        
+//        print(self)
+        
+        if
+            outerLeft.parentCount >= 4,
+            case let .pair(left, centre) = outerLeft.number,
+            case .integer = left.number,
+            case .integer = centre.number,
+            case .integer = outerRight.number {
+            // [[left, centre], outerRight]
+            return outerLeft
+        }
+        
+        if
+            outerRight.parentCount >= 4,
+            case let .pair(centre, right) = outerRight.number,
+            case .integer = outerLeft.number,
+            case .integer = centre.number,
+            case .integer = right.number {
+            // [outerLeft, [centre, right]]
+            return outerRight
+        }
+        
+        if let leftRecursive = outerLeft.nextNumberThatShouldExplode {
+            return leftRecursive
+        }
+        
+        if let rightRecursive = outerRight.nextNumberThatShouldExplode {
+            return rightRecursive
+        }
+        
+        return nil
+    }
+    
     var parentCount: Int {
         if let parent = parent {
             return parent.parentCount + 1
@@ -243,5 +279,18 @@ splitExample3
 let explodeExample1 = SnailFishNumberWrapper([[[[[9,8],1],2],3],4])!
 //explodeExample1.flattened.forEach { print($0, $0.parentCount) }
 //explodeExample1.flattenedPairs.forEach { print($0, $0.parentCount) }
-SnailFishNumberWrapper.explodeIfNecessary(explodeExample1)
+explodeExample1.nextNumberThatShouldExplode
+//SnailFishNumberWrapper.explodeIfNecessary(explodeExample1)
 explodeExample1
+
+let explodeExample2 = SnailFishNumberWrapper([7,[6,[5,[4,[3,2]]]]])!
+explodeExample2.nextNumberThatShouldExplode
+
+let explodeExample3 = SnailFishNumberWrapper([[6,[5,[4,[3,2]]]],1])
+explodeExample3?.nextNumberThatShouldExplode
+
+let explodeExample4 = SnailFishNumberWrapper([[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]])
+explodeExample4?.nextNumberThatShouldExplode
+
+let explodeExample5 = SnailFishNumberWrapper([[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]])
+explodeExample5?.nextNumberThatShouldExplode
