@@ -61,6 +61,23 @@ class SnailFishNumberWrapper {
         }
     }
     
+    var flattenedPairs: [SnailFishNumberWrapper] {
+        switch number {
+            case .integer:
+                return []
+            case let .pair(left, right):
+                if case .integer = left.number, case .integer = right.number {
+                    return [self]
+                } else if case .integer = left.number {
+                    return [left] + right.flattenedPairs
+                } else if case .integer = right.number {
+                    return left.flattenedPairs + [right]
+                } else {
+                    return left.flattenedPairs + right.flattenedPairs
+                }
+        }
+    }
+    
     func flattened(level: Int = 0) -> [(level: Int, snailFishNumber: SnailFishNumberWrapper)] {
         switch number {
             case .integer:
@@ -70,7 +87,19 @@ class SnailFishNumberWrapper {
         }
     }
     
+    /**
+     I'm not convinced this is incrementing the levels properly.
+     We might need to use a parent based level system.
+     */
     static func + (lhs: SnailFishNumberWrapper, rhs: SnailFishNumberWrapper) -> SnailFishNumberWrapper {
+        for number in lhs.flattenedPairs {
+            number.level += 1
+        }
+        
+        for number in rhs.flattenedPairs {
+            number.level += 1
+        }
+        
         for number in lhs.flattened {
             number.level += 1
         }
@@ -152,11 +181,15 @@ let example3 = SnailFishNumberWrapper([9,[8,7]])
 let example4 = SnailFishNumberWrapper([[1,9], [8,5]])
 example4?.flattened
 example4?.flattened()
+example4?.flattenedPairs
 let example5 = SnailFishNumberWrapper([[[[1,2],[3,4]],[[5,6],[7,8]]],9])
 let example6 = SnailFishNumberWrapper([[[9,[3,8]],[[0,9],6]],[[[3,7],[4,9]],3]])
 let example7 = SnailFishNumberWrapper([[[[1,3],[5,3]],[[1,3],[8,7]]],[[[4,9],[6,9]],[[8,2],[7,3]]]])
 
-SnailFishNumberWrapper([1,2])! + SnailFishNumberWrapper([[3,4],5])!
+let exampleAdded = SnailFishNumberWrapper([1,2])! + SnailFishNumberWrapper([[3,4],5])!
+
+exampleAdded.flattened.forEach { print($0, $0.level) }
+exampleAdded.flattenedPairs.forEach { print($0, $0.level) }
 
 let splitExample0 = SnailFishNumberWrapper(9)!
 let splitExample1 = SnailFishNumberWrapper(10)!
@@ -171,3 +204,6 @@ splitExample1
 splitExample2
 splitExample3
 
+let explodeExample = SnailFishNumberWrapper([[[[[9,8],1],2],3],4])
+//explodeExample?.flattened.forEach { print($0, $0.level) }
+//explodeExample?.flattenedPairs.forEach { print($0, $0.level) }
