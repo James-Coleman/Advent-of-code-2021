@@ -117,7 +117,7 @@ class SnailFishNumberWrapper {
             if int >= 10 {
                 let (quotient, remainder) = int.quotientAndRemainder(dividingBy: 2)
                 
-                guard let left = SnailFishNumberWrapper(quotient), let right = SnailFishNumberWrapper(quotient + remainder) else { continue }
+                guard let left = SnailFishNumberWrapper(quotient, parent: wrapper), let right = SnailFishNumberWrapper(quotient + remainder, parent: wrapper) else { continue }
                 
                 wrapper.number = .pair(left, right)
                 
@@ -131,19 +131,24 @@ class SnailFishNumberWrapper {
     /**
      - returns: Bool of if something was exploded
      */
-//    static func explodeIfNecessary(_ number: SnailFishNumberWrapper) -> Bool {
-//        let flattened = number.flattened()
-//
-//        for (index, wrapper) in flattened.enumerated() {
-//            if wrapper.level >= 4 {
-//
-//
-//                return true
-//            }
-//        }
-//
-//        return false
-//    }
+    static func explodeIfNecessary(_ number: SnailFishNumberWrapper) -> Bool {
+        let flattenedPairs = number.flattenedPairs
+
+        for (index, wrapper) in flattenedPairs.enumerated() {
+            if wrapper.parentCount >= 4, case let .pair(left, right) = wrapper.number, case let .integer(leftInt) = left.number, case let .integer(rightInt) = right.number {
+                
+                if index == 0 {
+                    
+                } else {
+                    
+                }
+
+                return true
+            }
+        }
+
+        return false
+    }
 }
 
 extension SnailFishNumberWrapper: CustomStringConvertible {
@@ -188,5 +193,5 @@ splitExample2
 splitExample3
 
 let explodeExample = SnailFishNumberWrapper([[[[[9,8],1],2],3],4])
-//explodeExample?.flattened.forEach { print($0, $0.level) }
-//explodeExample?.flattenedPairs.forEach { print($0, $0.level) }
+explodeExample?.flattened.forEach { print($0, $0.parentCount) }
+explodeExample?.flattenedPairs.forEach { print($0, $0.parentCount) }
