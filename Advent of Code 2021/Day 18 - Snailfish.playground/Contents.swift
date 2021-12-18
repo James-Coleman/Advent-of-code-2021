@@ -11,21 +11,21 @@ class SnailFishNumberWrapper {
         case integer(Int)
         case pair(SnailFishNumberWrapper, SnailFishNumberWrapper)
         
-        init(throws any: Any) throws {
+        init(throws any: Any, level: Int = 0) throws {
             if let int = any as? Int {
                 self = .integer(int)
             } else if let array = any as? [Any] {
-                self = .pair(try SnailFishNumberWrapper(throws: array[0]), try SnailFishNumberWrapper(throws: array[1]))
+                self = .pair(try SnailFishNumberWrapper(throws: array[0], level: level + 1), try SnailFishNumberWrapper(throws: array[1], level: level + 1))
             } else {
                 throw SnailFishNumberError.couldntInit(from: any)
             }
         }
         
-        init?(_ any: Any) {
+        init?(_ any: Any, level: Int = 0) {
             if let int = any as? Int {
                 self = .integer(int)
             } else if let array = any as? [Any] {
-                guard let left = SnailFishNumberWrapper(array[0]), let right = SnailFishNumberWrapper(array[1]) else { return nil }
+                guard let left = SnailFishNumberWrapper(array[0], level: level + 1), let right = SnailFishNumberWrapper(array[1], level: level + 1) else { return nil }
                 self = .pair(left, right)
             } else {
                 return nil
@@ -33,18 +33,22 @@ class SnailFishNumberWrapper {
         }
     }
     
+    var level: Int
     var number: SnailFishNumber
     
-    init(throws any: Any) throws {
-        self.number = try SnailFishNumber(throws: any)
+    init(throws any: Any, level: Int = 0) throws {
+        self.level = level
+        self.number = try SnailFishNumber(throws: any, level: level)
     }
     
-    init?(_ any: Any) {
-        guard let number = SnailFishNumber(any) else { return nil }
+    init?(_ any: Any, level: Int = 0) {
+        guard let number = SnailFishNumber(any, level: level) else { return nil }
+        self.level = level
         self.number = number
     }
     
-    init(pair: (SnailFishNumberWrapper, SnailFishNumberWrapper)) {
+    init(pair: (SnailFishNumberWrapper, SnailFishNumberWrapper), level: Int) {
+        self.level = level
         self.number = .pair(pair.0, pair.1)
     }
     
@@ -67,7 +71,15 @@ class SnailFishNumberWrapper {
     }
     
     static func + (lhs: SnailFishNumberWrapper, rhs: SnailFishNumberWrapper) -> SnailFishNumberWrapper {
-        SnailFishNumberWrapper(pair: (lhs, rhs))
+        for number in lhs.flattened {
+            number.level += 1
+        }
+        
+        for number in rhs.flattened {
+            number.level += 1
+        }
+        
+        return SnailFishNumberWrapper(pair: (lhs, rhs), level: 0)
     }
     
     /**
@@ -118,6 +130,17 @@ extension SnailFishNumberWrapper: CustomStringConvertible {
                 return "\(int)"
             case let .pair(left, right):
                 return "[\(left),\(right)]"
+        }
+    }
+}
+
+extension SnailFishNumberWrapper: CustomDebugStringConvertible {
+    var debugDescription: String {
+        switch number {
+            case let .integer(int):
+                return "\(int)"
+            case let .pair(left, right):
+                return "[\(left.debugDescription),\(right.debugDescription)] (\(level))"
         }
     }
 }
