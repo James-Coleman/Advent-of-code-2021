@@ -2,11 +2,11 @@ import Foundation
 
 var greeting = "Hello, playground"
 
+enum SnailFishNumberError: Error {
+    case couldntInit(from: Any)
+}
+
 indirect enum SnailFishNumber {
-    enum Error: Swift.Error {
-        case couldntInit(from: Any)
-    }
-    
     case integer(Int)
     case pair(SnailFishNumber, SnailFishNumber)
     
@@ -16,7 +16,7 @@ indirect enum SnailFishNumber {
         } else if let array = any as? [Any] {
             self = .pair(try SnailFishNumber(array[0]), try SnailFishNumber(array[1]))
         } else {
-            throw Error.couldntInit(from: any)
+            throw SnailFishNumberError.couldntInit(from: any)
         }
     }
 }
@@ -36,6 +36,49 @@ extension SnailFishNumber: CustomStringConvertible {
 extension SnailFishNumber: ExpressibleByIntegerLiteral {
     init(integerLiteral value: IntegerLiteralType) {
         self = .integer(value)
+    }
+}
+
+class SnailFishNumberWrapper {
+    enum SnailFishNumber {
+        case integer(Int)
+        case pair(SnailFishNumberWrapper, SnailFishNumberWrapper)
+        
+        init(_ any: Any) throws {
+            if let int = any as? Int {
+                self = .integer(int)
+            } else if let array = any as? [Any] {
+                self = .pair(try SnailFishNumberWrapper(array[0]), try SnailFishNumberWrapper(array[1]))
+            } else {
+                throw SnailFishNumberError.couldntInit(from: any)
+            }
+        }
+    }
+    
+    let number: SnailFishNumber
+    
+    init(_ any: Any) throws {
+        self.number = try SnailFishNumber(any)
+    }
+    
+    var flattened: [SnailFishNumberWrapper] {
+        switch number {
+            case .integer:
+                return [self]
+            case let .pair(left, right):
+                return [left.flattened, right.flattened].flatMap { $0 }
+        }
+    }
+}
+
+extension SnailFishNumberWrapper: CustomStringConvertible {
+    var description: String {
+        switch number {
+            case let .integer(int):
+                return "\(int)"
+            case let .pair(left, right):
+                return "[\(left),\(right)]"
+        }
     }
 }
 
@@ -70,4 +113,11 @@ do {
     let example7 = try SnailFishNumber([[[[1,3],[5,3]],[[1,3],[8,7]]],[[[4,9],[6,9]],[[8,2],[7,3]]]])
 } catch {
     error
+}
+
+do {
+    let example4 = try SnailFishNumberWrapper([[1,9], [8,5]])
+    example4.flattened
+} catch {
+    
 }
