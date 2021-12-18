@@ -129,20 +129,68 @@ class SnailFishNumberWrapper {
     }
     
     /**
+     This isn't working because the flattenedPairs variable unwraps the Numbers too far
      - returns: Bool of if something was exploded
      */
     static func explodeIfNecessary(_ number: SnailFishNumberWrapper) -> Bool {
         let flattenedPairs = number.flattenedPairs
 
         for (index, wrapper) in flattenedPairs.enumerated() {
-            if wrapper.parentCount >= 4, case let .pair(left, right) = wrapper.number, case let .integer(leftInt) = left.number, case let .integer(rightInt) = right.number {
+            print(wrapper, wrapper.parentCount)
+            
+            if
+                case let .pair(leftNumber, rightNumber) = wrapper.number,
+                leftNumber.parentCount >= 4,
+                case let .pair(left, center) = leftNumber.number,
+                case let .integer(leftInt) = left.number,
+                case let .integer(centreInt) = center.number,
+                case let .integer(rightInt) = rightNumber.number {
+                // [[left, centre], right]
+                let sum = centreInt + rightInt
                 
-                if index == 0 {
+                guard
+                    let newLeft = SnailFishNumberWrapper(0, parent: wrapper),
+                    let newRight = SnailFishNumberWrapper(sum, parent: wrapper)
+                else { continue }
+                
+                wrapper.number = .pair(newLeft, newRight)
+                
+                // add leftInt to index - 1
+                
+                if index > 0, case let .integer(previousInt) = flattenedPairs[index - 1].number {
+                    let otherSum = previousInt + leftInt
                     
-                } else {
-                    
+                    flattenedPairs[index - 1].number = .integer(otherSum)
                 }
-
+                
+                return true
+            }
+            
+            if
+                case let .pair(leftNumber, rightNumber) = wrapper.number,
+                rightNumber.parentCount >= 4,
+                case let .pair(center, right) = rightNumber.number,
+                case let .integer(leftInt) = leftNumber.number,
+                case let .integer(centreInt) = center.number,
+                case let .integer(rightInt) = right.number {
+                // [left, [centre, right]]
+                let sum = leftInt + centreInt
+                
+                guard
+                    let newLeft = SnailFishNumberWrapper(sum, parent: wrapper),
+                    let newRight = SnailFishNumberWrapper(0, parent: wrapper)
+                else { continue }
+                
+                wrapper.number = .pair(newLeft, newRight)
+                
+                // add rightInt to index + 1
+                
+                if index < flattenedPairs.count - 1, case let .integer(nextInt) = flattenedPairs[index + 1].number {
+                    let otherSum = rightInt + nextInt
+                    
+                    flattenedPairs[index + 1].number = .integer(otherSum)
+                }
+                
                 return true
             }
         }
@@ -176,8 +224,8 @@ let example7 = SnailFishNumberWrapper([[[[1,3],[5,3]],[[1,3],[8,7]]],[[[4,9],[6,
 
 let exampleAdded = SnailFishNumberWrapper([1,2])! + SnailFishNumberWrapper([[3,4],5])!
 
-exampleAdded.flattened.forEach { print($0, $0.parentCount) }
-exampleAdded.flattenedPairs.forEach { print($0, $0.parentCount) }
+//exampleAdded.flattened.forEach { print($0, $0.parentCount) }
+//exampleAdded.flattenedPairs.forEach { print($0, $0.parentCount) }
 
 let splitExample0 = SnailFishNumberWrapper(9)!
 let splitExample1 = SnailFishNumberWrapper(10)!
@@ -192,6 +240,8 @@ splitExample1
 splitExample2
 splitExample3
 
-let explodeExample = SnailFishNumberWrapper([[[[[9,8],1],2],3],4])
-explodeExample?.flattened.forEach { print($0, $0.parentCount) }
-explodeExample?.flattenedPairs.forEach { print($0, $0.parentCount) }
+let explodeExample1 = SnailFishNumberWrapper([[[[[9,8],1],2],3],4])!
+//explodeExample1.flattened.forEach { print($0, $0.parentCount) }
+//explodeExample1.flattenedPairs.forEach { print($0, $0.parentCount) }
+SnailFishNumberWrapper.explodeIfNecessary(explodeExample1)
+explodeExample1
