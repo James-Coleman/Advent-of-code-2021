@@ -34,6 +34,7 @@ class SnailFishNumberWrapper {
         }
     }
     
+    let id = UUID()
     var parent: SnailFishNumberWrapper?
     var number: SnailFishNumber = .parentLessPlaceholder
     
@@ -86,6 +87,25 @@ class SnailFishNumberWrapper {
         }
         
         return nil
+    }
+    
+    var leftMostNumber: SnailFishNumberWrapper? {
+        switch number {
+            case .parentLessPlaceholder:
+                return nil
+            case .integer:
+                return self
+            case let .pair(left, _):
+                return left.leftMostNumber
+        }
+    }
+    
+    func siblingToRight(of number: SnailFishNumberWrapper) -> SnailFishNumberWrapper? {
+        
+    }
+    
+    func left(contains: SnailFishNumberWrapper) -> Bool {
+        
     }
     
     var parentCount: Int {
@@ -232,6 +252,12 @@ class SnailFishNumberWrapper {
         }
 
         return false
+    }
+}
+
+extension SnailFishNumberWrapper: Equatable {
+    static func == (lhs: SnailFishNumberWrapper, rhs: SnailFishNumberWrapper) -> Bool {
+        lhs.id == rhs.id
     }
 }
 
