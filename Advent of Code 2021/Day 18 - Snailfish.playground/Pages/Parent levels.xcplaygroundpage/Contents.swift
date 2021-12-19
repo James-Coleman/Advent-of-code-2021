@@ -2,32 +2,32 @@ import Foundation
 
 var greeting = "Hello, playground"
 
-enum SnailFishNumberError: Error {
-    case couldntInit(from: Any)
-    case splitOrExplodeWithoutIndex(split: SnailFishNumberWrapper, explode: SnailFishNumberWrapper, parent: SnailFishNumberWrapper)
-}
-
-class SnailFishNumberWrapper {
-    enum SnailFishNumber {
+class SnailFishNumber {
+    enum Error: Swift.Error {
+        case couldntInit(from: Any)
+        case splitOrExplodeWithoutIndex(split: SnailFishNumber, explode: SnailFishNumber, parent: SnailFishNumber)
+    }
+    
+    enum Number {
         case parentLessPlaceholder
         case integer(Int)
-        case pair(SnailFishNumberWrapper, SnailFishNumberWrapper)
+        case pair(SnailFishNumber, SnailFishNumber)
         
-        init(throws any: Any, parent: SnailFishNumberWrapper? = nil) throws {
+        init(throws any: Any, parent: SnailFishNumber? = nil) throws {
             if let int = any as? Int {
                 self = .integer(int)
             } else if let array = any as? [Any] {
-                self = .pair(try SnailFishNumberWrapper(throws: array[0], parent: parent), try SnailFishNumberWrapper(throws: array[1], parent: parent))
+                self = .pair(try SnailFishNumber(throws: array[0], parent: parent), try SnailFishNumber(throws: array[1], parent: parent))
             } else {
-                throw SnailFishNumberError.couldntInit(from: any)
+                throw Error.couldntInit(from: any)
             }
         }
         
-        init?(_ any: Any, parent: SnailFishNumberWrapper? = nil) {
+        init?(_ any: Any, parent: SnailFishNumber? = nil) {
             if let int = any as? Int {
                 self = .integer(int)
             } else if let array = any as? [Any] {
-                guard let left = SnailFishNumberWrapper(array[0], parent: parent), let right = SnailFishNumberWrapper(array[1], parent: parent) else { return nil }
+                guard let left = SnailFishNumber(array[0], parent: parent), let right = SnailFishNumber(array[1], parent: parent) else { return nil }
                 self = .pair(left, right)
             } else {
                 return nil
@@ -36,21 +36,21 @@ class SnailFishNumberWrapper {
     }
     
     let id = UUID()
-    var parent: SnailFishNumberWrapper?
-    var number: SnailFishNumber = .parentLessPlaceholder
+    var parent: SnailFishNumber?
+    var number: Number = .parentLessPlaceholder
     
-    init(throws any: Any, parent: SnailFishNumberWrapper? = nil) throws {
+    init(throws any: Any, parent: SnailFishNumber? = nil) throws {
         self.parent = parent
-        self.number = try SnailFishNumber(throws: any, parent: self)
+        self.number = try Number(throws: any, parent: self)
     }
     
-    init?(_ any: Any, parent: SnailFishNumberWrapper? = nil) {
-        guard let number = SnailFishNumber(any, parent: self) else { return nil }
+    init?(_ any: Any, parent: SnailFishNumber? = nil) {
+        guard let number = Number(any, parent: self) else { return nil }
         self.parent = parent
         self.number = number
     }
     
-    init(pair: (SnailFishNumberWrapper, SnailFishNumberWrapper)) {
+    init(pair: (SnailFishNumber, SnailFishNumber)) {
         self.number = .pair(pair.0, pair.1)
     }
     
@@ -83,11 +83,11 @@ class SnailFishNumberWrapper {
             }
         }
         
-        if let splitter = splitter {
+        if splitter != nil {
             return "We should split"
         }
         
-        if let exploder = exploder {
+        if exploder != nil {
             return "We should explode"
         }
         
@@ -111,7 +111,7 @@ class SnailFishNumberWrapper {
                     return explodeIfNecessary()
                 }
             } else {
-                throw SnailFishNumberError.splitOrExplodeWithoutIndex(split: splitter, explode: exploder, parent: self)
+                throw Error.splitOrExplodeWithoutIndex(split: splitter, explode: exploder, parent: self)
             }
         }
         
@@ -134,7 +134,7 @@ class SnailFishNumberWrapper {
         } while didSomething
     }
     
-    var firstNumberThatShouldSplit: SnailFishNumberWrapper? {
+    var firstNumberThatShouldSplit: SnailFishNumber? {
         switch number {
             case .parentLessPlaceholder:
                 return nil
@@ -155,7 +155,7 @@ class SnailFishNumberWrapper {
         }
     }
     
-    var firstPairThatShouldExplode: SnailFishNumberWrapper? {
+    var firstPairThatShouldExplode: SnailFishNumber? {
         guard case let .pair(outerLeft, outerRight) = number else { return nil }
         
         if
@@ -189,7 +189,7 @@ class SnailFishNumberWrapper {
         return nil
     }
     
-    var leftMostNumber: SnailFishNumberWrapper? {
+    var leftMostNumber: SnailFishNumber? {
         switch number {
             case .parentLessPlaceholder:
                 return nil
@@ -200,7 +200,7 @@ class SnailFishNumberWrapper {
         }
     }
     
-    var rightMostNumber: SnailFishNumberWrapper? {
+    var rightMostNumber: SnailFishNumber? {
         switch number {
             case .parentLessPlaceholder:
                 return nil
@@ -211,7 +211,7 @@ class SnailFishNumberWrapper {
         }
     }
     
-    var leftMostPair: SnailFishNumberWrapper? {
+    var leftMostPair: SnailFishNumber? {
         switch number {
             case .parentLessPlaceholder:
                 return nil
@@ -226,7 +226,7 @@ class SnailFishNumberWrapper {
         }
     }
     
-    var rightMostPair: SnailFishNumberWrapper? {
+    var rightMostPair: SnailFishNumber? {
         switch number {
             case .parentLessPlaceholder:
                 return nil
@@ -241,15 +241,15 @@ class SnailFishNumberWrapper {
         }
     }
     
-    var leftNeighbour: SnailFishNumberWrapper? {
+    var leftNeighbour: SnailFishNumber? {
         neighbourToLeft(of: self)
     }
     
-    var rightNeighbour: SnailFishNumberWrapper? {
+    var rightNeighbour: SnailFishNumber? {
         neighbourToRight(of: self)
     }
     
-    func neighbourToRight(of number: SnailFishNumberWrapper) -> SnailFishNumberWrapper? {
+    func neighbourToRight(of number: SnailFishNumber) -> SnailFishNumber? {
         if rightMostPair == number {
             return parent?.neighbourToRight(of: number)
         } else {
@@ -264,7 +264,7 @@ class SnailFishNumberWrapper {
         }
     }
     
-    func neighbourToLeft(of number: SnailFishNumberWrapper) -> SnailFishNumberWrapper? {
+    func neighbourToLeft(of number: SnailFishNumber) -> SnailFishNumber? {
         if leftMostPair == number {
             return parent?.neighbourToLeft(of: number)
         } else {
@@ -280,7 +280,7 @@ class SnailFishNumberWrapper {
     }
     
     /// AKA rootNode
-    var oldestParent: SnailFishNumberWrapper {
+    var oldestParent: SnailFishNumber {
         if let parent = parent {
             return parent.oldestParent
         } else {
@@ -298,7 +298,7 @@ class SnailFishNumberWrapper {
 //        (parent?.parentCount ?? -1) + 1 // cheesy but it would work
     }
     
-    var flattened: [SnailFishNumberWrapper] {
+    var flattened: [SnailFishNumber] {
         switch number {
             case .parentLessPlaceholder:
                 return []
@@ -309,7 +309,7 @@ class SnailFishNumberWrapper {
         }
     }
     
-    var flattenedPairs: [SnailFishNumberWrapper] {
+    var flattenedPairs: [SnailFishNumber] {
         switch number {
             case .parentLessPlaceholder:
                 return []
@@ -332,8 +332,8 @@ class SnailFishNumberWrapper {
      I'm not convinced this is incrementing the levels properly.
      We might need to use a parent based level system.
      */
-    static func + (lhs: SnailFishNumberWrapper, rhs: SnailFishNumberWrapper) -> SnailFishNumberWrapper {
-        let newPair = SnailFishNumberWrapper(pair: (lhs, rhs))
+    static func + (lhs: SnailFishNumber, rhs: SnailFishNumber) -> SnailFishNumber {
+        let newPair = SnailFishNumber(pair: (lhs, rhs))
         
         lhs.parent = newPair
         rhs.parent = newPair
@@ -348,7 +348,7 @@ class SnailFishNumberWrapper {
         if let split = firstNumberThatShouldSplit, case let .integer(int) = split.number {
             let (quotient, remainder) = int.quotientAndRemainder(dividingBy: 2)
             
-            guard let left = SnailFishNumberWrapper(quotient, parent: split), let right = SnailFishNumberWrapper(quotient + remainder, parent: split) else { return false }
+            guard let left = SnailFishNumber(quotient, parent: split), let right = SnailFishNumber(quotient + remainder, parent: split) else { return false }
             
             split.number = .pair(left, right)
             
@@ -380,13 +380,13 @@ class SnailFishNumberWrapper {
     }
 }
 
-extension SnailFishNumberWrapper: Equatable {
-    static func == (lhs: SnailFishNumberWrapper, rhs: SnailFishNumberWrapper) -> Bool {
+extension SnailFishNumber: Equatable {
+    static func == (lhs: SnailFishNumber, rhs: SnailFishNumber) -> Bool {
         lhs.id == rhs.id
     }
 }
 
-extension SnailFishNumberWrapper: CustomStringConvertible {
+extension SnailFishNumber: CustomStringConvertible {
     var description: String {
         switch number {
             case .parentLessPlaceholder:
@@ -399,23 +399,23 @@ extension SnailFishNumberWrapper: CustomStringConvertible {
     }
 }
 
-let example1 = SnailFishNumberWrapper([1,2])
-let example2 = SnailFishNumberWrapper([[1,2],3])
-let example3 = SnailFishNumberWrapper([9,[8,7]])
-let example4 = SnailFishNumberWrapper([[1,9], [8,5]])
+let example1 = SnailFishNumber([1,2])
+let example2 = SnailFishNumber([[1,2],3])
+let example3 = SnailFishNumber([9,[8,7]])
+let example4 = SnailFishNumber([[1,9], [8,5]])
 example4?.flattenedPairs
-let example5 = SnailFishNumberWrapper([[[[1,2],[3,4]],[[5,6],[7,8]]],9])
-let example6 = SnailFishNumberWrapper([[[9,[3,8]],[[0,9],6]],[[[3,7],[4,9]],3]])
-let example7 = SnailFishNumberWrapper([[[[1,3],[5,3]],[[1,3],[8,7]]],[[[4,9],[6,9]],[[8,2],[7,3]]]])
+let example5 = SnailFishNumber([[[[1,2],[3,4]],[[5,6],[7,8]]],9])
+let example6 = SnailFishNumber([[[9,[3,8]],[[0,9],6]],[[[3,7],[4,9]],3]])
+let example7 = SnailFishNumber([[[[1,3],[5,3]],[[1,3],[8,7]]],[[[4,9],[6,9]],[[8,2],[7,3]]]])
 
-let exampleAdded = SnailFishNumberWrapper([1,2])! + SnailFishNumberWrapper([[3,4],5])!
+let exampleAdded = SnailFishNumber([1,2])! + SnailFishNumber([[3,4],5])!
 
 //exampleAdded.flattenedPairs.forEach { print($0, $0.parentCount) }
 
-let splitExample0 = SnailFishNumberWrapper(9)!
-let splitExample1 = SnailFishNumberWrapper(10)!
-let splitExample2 = SnailFishNumberWrapper(11)!
-let splitExample3 = SnailFishNumberWrapper(12)!
+let splitExample0 = SnailFishNumber(9)!
+let splitExample1 = SnailFishNumber(10)!
+let splitExample2 = SnailFishNumber(11)!
+let splitExample3 = SnailFishNumber(12)!
 splitExample0.shouldSplitOrExplode()
 splitExample1.shouldSplitOrExplode()
 splitExample2.shouldSplitOrExplode()
@@ -433,33 +433,33 @@ splitExample1
 splitExample2
 splitExample3
 
-let explodeExample1 = SnailFishNumberWrapper([[[[[9,8],1],2],3],4])!
+let explodeExample1 = SnailFishNumber([[[[[9,8],1],2],3],4])!
 explodeExample1.shouldSplitOrExplode()
 explodeExample1.explodeIfNecessary()
 explodeExample1
 explodeExample1.shouldSplitOrExplode()
 
-let explodeExample2 = SnailFishNumberWrapper([7,[6,[5,[4,[3,2]]]]])!
+let explodeExample2 = SnailFishNumber([7,[6,[5,[4,[3,2]]]]])!
 explodeExample2.shouldSplitOrExplode()
 explodeExample2.explodeIfNecessary()
 explodeExample2
 
-let explodeExample3 = SnailFishNumberWrapper([[6,[5,[4,[3,2]]]],1])!
+let explodeExample3 = SnailFishNumber([[6,[5,[4,[3,2]]]],1])!
 explodeExample3.shouldSplitOrExplode()
 explodeExample3.explodeIfNecessary()
 explodeExample3
 
-let explodeExample4 = SnailFishNumberWrapper([[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]])!
+let explodeExample4 = SnailFishNumber([[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]])!
 explodeExample4.shouldSplitOrExplode()
 explodeExample4.explodeIfNecessary()
 explodeExample4
 
-let explodeExample5 = SnailFishNumberWrapper([[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]])!
+let explodeExample5 = SnailFishNumber([[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]])!
 explodeExample5.shouldSplitOrExplode()
 explodeExample5.explodeIfNecessary()
 explodeExample5
 
-let steppedExample1 = SnailFishNumberWrapper([[[[4,3],4],4],[7,[[8,4],9]]])! + SnailFishNumberWrapper([1,1])!
+let steppedExample1 = SnailFishNumber([[[[4,3],4],4],[7,[[8,4],9]]])! + SnailFishNumber([1,1])!
 steppedExample1.shouldSplitOrExplode()
 steppedExample1.explodeIfNecessary()
 steppedExample1
@@ -478,21 +478,30 @@ steppedExample1
 steppedExample1.shouldSplitOrExplode()
 
 do {
-    let steppedExample2 = SnailFishNumberWrapper([[[[4,3],4],4],[7,[[8,4],9]]])! + SnailFishNumberWrapper([1,1])!
+    let steppedExample2 = SnailFishNumber([[[[4,3],4],4],[7,[[8,4],9]]])! + SnailFishNumber([1,1])!
     try steppedExample2.reduce()
     steppedExample2
+} catch {
+    error
+}
+
+do {
+    let reducedExample1 = SnailFishNumber([1,1])! + SnailFishNumber([2,2])! + SnailFishNumber([3,3])! + SnailFishNumber([4,4])!
+    try reducedExample1.reduce()
+    reducedExample1
     
-    let steppedExample3 = SnailFishNumberWrapper([1,1])! + SnailFishNumberWrapper([2,2])! + SnailFishNumberWrapper([3,3])! + SnailFishNumberWrapper([4,4])!
-    try steppedExample3.reduce()
-    steppedExample3
+    let reducedExample2 = SnailFishNumber([1,1])! + SnailFishNumber([2,2])! + SnailFishNumber([3,3])! + SnailFishNumber([4,4])! + SnailFishNumber([5,5])!
+    try reducedExample2.reduce()
+    reducedExample2
     
-    let steppedExample4 = SnailFishNumberWrapper([1,1])! + SnailFishNumberWrapper([2,2])! + SnailFishNumberWrapper([3,3])! + SnailFishNumberWrapper([4,4])! + SnailFishNumberWrapper([5,5])!
-    try steppedExample4.reduce()
-    steppedExample4
+    let reducedExample2a = SnailFishNumber([[[[[1,1],[2,2]],[3,3]],[4,4]],[5,5]])
+    reducedExample2a?.shouldSplitOrExplode()
+    try reducedExample2a?.reduce()
+    reducedExample2a
     
-    let steppedExample5 = SnailFishNumberWrapper([1,1])! + SnailFishNumberWrapper([2,2])! + SnailFishNumberWrapper([3,3])! + SnailFishNumberWrapper([4,4])! + SnailFishNumberWrapper([5,5])! + SnailFishNumberWrapper([6,6])!
-    try steppedExample5.reduce()
-    steppedExample5
+    let reducedExample3 = SnailFishNumber([1,1])! + SnailFishNumber([2,2])! + SnailFishNumber([3,3])! + SnailFishNumber([4,4])! + SnailFishNumber([5,5])! + SnailFishNumber([6,6])!
+    try reducedExample3.reduce()
+    reducedExample3
 } catch {
     error
 }
