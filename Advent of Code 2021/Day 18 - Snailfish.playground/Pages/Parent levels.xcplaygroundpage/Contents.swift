@@ -309,25 +309,6 @@ class SnailFishNumber {
         }
     }
     
-    var flattenedPairs: [SnailFishNumber] {
-        switch number {
-            case .parentLessPlaceholder:
-                return []
-            case .integer:
-                return []
-            case let .pair(left, right):
-                if case .integer = left.number, case .integer = right.number {
-                    return [self]
-                } else if case .integer = left.number {
-                    return [left] + right.flattenedPairs
-                } else if case .integer = right.number {
-                    return left.flattenedPairs + [right]
-                } else {
-                    return left.flattenedPairs + right.flattenedPairs
-                }
-        }
-    }
-    
     /**
      I'm not convinced this is incrementing the levels properly.
      We might need to use a parent based level system.
@@ -403,14 +384,11 @@ let example1 = SnailFishNumber([1,2])
 let example2 = SnailFishNumber([[1,2],3])
 let example3 = SnailFishNumber([9,[8,7]])
 let example4 = SnailFishNumber([[1,9], [8,5]])
-example4?.flattenedPairs
 let example5 = SnailFishNumber([[[[1,2],[3,4]],[[5,6],[7,8]]],9])
 let example6 = SnailFishNumber([[[9,[3,8]],[[0,9],6]],[[[3,7],[4,9]],3]])
 let example7 = SnailFishNumber([[[[1,3],[5,3]],[[1,3],[8,7]]],[[[4,9],[6,9]],[[8,2],[7,3]]]])
 
 let exampleAdded = SnailFishNumber([1,2])! + SnailFishNumber([[3,4],5])!
-
-//exampleAdded.flattenedPairs.forEach { print($0, $0.parentCount) }
 
 let splitExample0 = SnailFishNumber(9)!
 let splitExample1 = SnailFishNumber(10)!
