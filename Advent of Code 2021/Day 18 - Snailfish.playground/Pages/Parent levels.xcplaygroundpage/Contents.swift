@@ -100,12 +100,83 @@ class SnailFishNumberWrapper {
         }
     }
     
-    func siblingToRight(of number: SnailFishNumberWrapper) -> SnailFishNumberWrapper? {
-        
+    var rightMostNumber: SnailFishNumberWrapper? {
+        switch number {
+            case .parentLessPlaceholder:
+                return nil
+            case .integer:
+                return self
+            case let .pair(_, right):
+                return right.rightMostNumber
+        }
     }
     
-    func left(contains: SnailFishNumberWrapper) -> Bool {
-        
+    var leftMostPair: SnailFishNumberWrapper? {
+        switch number {
+            case .parentLessPlaceholder:
+                return nil
+            case .integer:
+                return nil
+            case let .pair(left, _):
+                if case .integer = left.number {
+                    return self
+                } else {
+                    return left.leftMostPair
+                }
+        }
+    }
+    
+    var rightMostPair: SnailFishNumberWrapper? {
+        switch number {
+            case .parentLessPlaceholder:
+                return nil
+            case .integer:
+                return nil
+            case let .pair(_, right):
+                if case .integer = right.number {
+                    return self
+                } else {
+                    return right.rightMostPair
+                }
+        }
+    }
+    
+    var leftNeighbour: SnailFishNumberWrapper? {
+        neighbourToLeft(of: self)
+    }
+    
+    var rightNeighbour: SnailFishNumberWrapper? {
+        neighbourToRight(of: self)
+    }
+    
+    func neighbourToRight(of number: SnailFishNumberWrapper) -> SnailFishNumberWrapper? {
+        if rightMostPair == number {
+            return parent?.neighbourToRight(of: number)
+        } else {
+            switch self.number {
+                case .parentLessPlaceholder:
+                    return nil
+                case .integer: // Don't know if this will ever be used
+                    return self
+                case let .pair(_, right):
+                    return right.leftMostNumber
+            }
+        }
+    }
+    
+    func neighbourToLeft(of number: SnailFishNumberWrapper) -> SnailFishNumberWrapper? {
+        if leftMostPair == number {
+            return parent?.neighbourToLeft(of: number)
+        } else {
+            switch self.number {
+                case .parentLessPlaceholder:
+                    return nil
+                case .integer: // Don't know if this will ever be used
+                    return self
+                case let .pair(left, _):
+                    return left.rightMostNumber
+            }
+        }
     }
     
     var parentCount: Int {
@@ -308,15 +379,20 @@ let explodeExample1 = SnailFishNumberWrapper([[[[[9,8],1],2],3],4])!
 explodeExample1.nextNumberThatShouldExplode
 //SnailFishNumberWrapper.explodeIfNecessary(explodeExample1)
 explodeExample1
+explodeExample1.nextNumberThatShouldExplode?.rightNeighbour
 
 let explodeExample2 = SnailFishNumberWrapper([7,[6,[5,[4,[3,2]]]]])!
 explodeExample2.nextNumberThatShouldExplode
+explodeExample2.nextNumberThatShouldExplode?.leftNeighbour
 
-let explodeExample3 = SnailFishNumberWrapper([[6,[5,[4,[3,2]]]],1])
-explodeExample3?.nextNumberThatShouldExplode
+let explodeExample3 = SnailFishNumberWrapper([[6,[5,[4,[3,2]]]],1])!
+explodeExample3.nextNumberThatShouldExplode
+explodeExample3.nextNumberThatShouldExplode?.rightNeighbour
 
-let explodeExample4 = SnailFishNumberWrapper([[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]])
-explodeExample4?.nextNumberThatShouldExplode
+let explodeExample4 = SnailFishNumberWrapper([[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]])!
+explodeExample4.nextNumberThatShouldExplode
+explodeExample4.nextNumberThatShouldExplode?.rightNeighbour
 
-let explodeExample5 = SnailFishNumberWrapper([[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]])
-explodeExample5?.nextNumberThatShouldExplode
+let explodeExample5 = SnailFishNumberWrapper([[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]])!
+explodeExample5.nextNumberThatShouldExplode
+explodeExample5.nextNumberThatShouldExplode?.rightNeighbour
