@@ -431,6 +431,9 @@ steppedExample1.explodeIfNecessary()
 steppedExample1
 steppedExample1.shouldSplitOrExplode()
 
+ */
+
+/*
 do {
     let steppedExample2 = SnailFishNumber([[[[4,3],4],4],[7,[[8,4],9]]])! + SnailFishNumber([1,1])!
     try steppedExample2.reduce()
@@ -449,7 +452,6 @@ do {
     reducedExample2
     
     let reducedExample2a = SnailFishNumber([[[[[1,1],[2,2]],[3,3]],[4,4]],[5,5]])
-    reducedExample2a?.shouldSplitOrExplode()
     try reducedExample2a?.reduce()
     reducedExample2a
     
