@@ -55,6 +55,17 @@ class SnailFishNumber {
         pair.1.parent = self
     }
     
+    var magnitude: Int {
+        switch number {
+            case .parentLessPlaceholder:
+                return 0
+            case let .pair(left, right):
+                return (3 * left.magnitude) + (2 * right.magnitude)
+            case let .integer(int):
+                return int
+        }
+    }
+    
     var parentCount: Int {
         if let parent = parent {
             return parent.parentCount + 1
@@ -290,6 +301,7 @@ extension SnailFishNumber: CustomStringConvertible {
     }
 }
 
+/*
 let example1 = SnailFishNumber([1,2])
 let example2 = SnailFishNumber([[1,2],3])
 let example3 = SnailFishNumber([9,[8,7]])
@@ -350,5 +362,29 @@ let reducedExample4 = SnailFishNumber([[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]])
 + SnailFishNumber([1,[[[9,3],9],[[9,0],[0,7]]]])!
 + SnailFishNumber([[[5,[7,4]],7],1])!
 + SnailFishNumber([[[[4,2],2],6],[8,7]])!
+*/
 
+/*
+SnailFishNumber([9,1])?.magnitude
+SnailFishNumber([1,9])?.magnitude
+SnailFishNumber([[9,1],[1,9]])?.magnitude
+SnailFishNumber([[1,2],[[3,4],5]])?.magnitude
+SnailFishNumber([[[[0,7],4],[[7,8],[6,0]]],[8,1]])?.magnitude
+SnailFishNumber([[[[1,1],[2,2]],[3,3]],[4,4]])?.magnitude
+SnailFishNumber([[[[3,0],[5,3]],[4,4]],[5,5]])?.magnitude
+SnailFishNumber([[[[5,0],[7,4]],[5,5]],[6,6]])?.magnitude
+SnailFishNumber([[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]])?.magnitude
 
+let exampleHomework = SnailFishNumber([[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]])!
++ SnailFishNumber([[[5,[2,8]],4],[5,[[9,9],0]]])!
++ SnailFishNumber([6,[[[6,2],[5,6]],[[7,6],[4,7]]]])!
++ SnailFishNumber([[[6,[0,7]],[0,9]],[4,[9,[9,0]]]])!
++ SnailFishNumber([[[7,[6,4]],[3,[1,3]]],[[[5,5],1],9]])!
++ SnailFishNumber([[6,[[7,3],[3,2]]],[[[3,8],[5,7]],4]])!
++ SnailFishNumber([[[[5,4],[7,7]],8],[[8,3],8]])!
++ SnailFishNumber([[9,3],[[9,9],[6,[4,9]]]])!
++ SnailFishNumber([[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]])!
++ SnailFishNumber([[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]])!
+
+exampleHomework.magnitude
+ */
