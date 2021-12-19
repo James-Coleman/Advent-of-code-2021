@@ -481,6 +481,18 @@ do {
     let steppedExample2 = SnailFishNumberWrapper([[[[4,3],4],4],[7,[[8,4],9]]])! + SnailFishNumberWrapper([1,1])!
     try steppedExample2.reduce()
     steppedExample2
+    
+    let steppedExample3 = SnailFishNumberWrapper([1,1])! + SnailFishNumberWrapper([2,2])! + SnailFishNumberWrapper([3,3])! + SnailFishNumberWrapper([4,4])!
+    try steppedExample3.reduce()
+    steppedExample3
+    
+    let steppedExample4 = SnailFishNumberWrapper([1,1])! + SnailFishNumberWrapper([2,2])! + SnailFishNumberWrapper([3,3])! + SnailFishNumberWrapper([4,4])! + SnailFishNumberWrapper([5,5])!
+    try steppedExample4.reduce()
+    steppedExample4
+    
+    let steppedExample5 = SnailFishNumberWrapper([1,1])! + SnailFishNumberWrapper([2,2])! + SnailFishNumberWrapper([3,3])! + SnailFishNumberWrapper([4,4])! + SnailFishNumberWrapper([5,5])! + SnailFishNumberWrapper([6,6])!
+    try steppedExample5.reduce()
+    steppedExample5
 } catch {
     error
 }
