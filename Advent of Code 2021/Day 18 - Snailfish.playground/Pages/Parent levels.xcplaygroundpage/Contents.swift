@@ -4,6 +4,7 @@ var greeting = "Hello, playground"
 
 enum SnailFishNumberError: Error {
     case couldntInit(from: Any)
+    case splitOrExplodeWithoutIndex(split: SnailFishNumberWrapper, explode: SnailFishNumberWrapper, parent: SnailFishNumberWrapper)
 }
 
 class SnailFishNumberWrapper {
@@ -91,6 +92,46 @@ class SnailFishNumberWrapper {
         }
         
         return "We should no nothing"
+    }
+    
+    /**
+     - Would be nice if we could pass through the already identified splitter / exploder, otherwise they are unwrapped again in the later functions.
+     - throws: `SnailFishNumberError.splitOrExplodeWithoutIndex`
+     - returns: A Bool of if something was reduced (either split or exploded)
+     */
+    func performNextReduction() throws -> Bool {
+        let splitter = firstNumberThatShouldSplit
+        let exploder = firstPairThatShouldExplode
+        
+        if let splitter = splitter, let exploder = exploder {
+            if let splitterIndex = splitter.index, let exploderIndex = exploder.index {
+                if splitterIndex < exploderIndex {
+                    return splitIfNecessary()
+                } else {
+                    return explodeIfNecessary()
+                }
+            } else {
+                throw SnailFishNumberError.splitOrExplodeWithoutIndex(split: splitter, explode: exploder, parent: self)
+            }
+        }
+        
+        if splitter != nil {
+            return splitIfNecessary()
+        }
+        
+        if exploder != nil {
+            return explodeIfNecessary()
+        }
+        
+        return false
+    }
+    
+    func reduce() throws {
+        var didSomething = false
+        
+        repeat {
+            didSomething = try performNextReduction()
+        } while didSomething
     }
     
     var firstNumberThatShouldSplit: SnailFishNumberWrapper? {
@@ -435,3 +476,11 @@ steppedExample1.shouldSplitOrExplode()
 steppedExample1.explodeIfNecessary()
 steppedExample1
 steppedExample1.shouldSplitOrExplode()
+
+do {
+    let steppedExample2 = SnailFishNumberWrapper([[[[4,3],4],4],[7,[[8,4],9]]])! + SnailFishNumberWrapper([1,1])!
+    try steppedExample2.reduce()
+    steppedExample2
+} catch {
+    error
+}
