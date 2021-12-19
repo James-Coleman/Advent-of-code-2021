@@ -77,8 +77,6 @@ class SnailFishNumberWrapper {
     var firstPairThatShouldExplode: SnailFishNumberWrapper? {
         guard case let .pair(outerLeft, outerRight) = number else { return nil }
         
-//        print(self)
-        
         if
             outerLeft.parentCount >= 4,
             case let .pair(left, centre) = outerLeft.number,
@@ -259,6 +257,27 @@ class SnailFishNumberWrapper {
         }
     }
     
+    func explodeIfNecessary() -> Bool {
+        if let exploding = firstPairThatShouldExplode, case let .pair(left, right) = exploding.number, case let .integer(leftInt) = left.number, case let .integer(rightInt) = right.number {
+            // The left number of the pair should be added to the left neighbour
+            if let leftNeighbour = exploding.leftNeighbour, case let .integer(leftNeighbourInt) = leftNeighbour.number {
+                leftNeighbour.number = .integer(leftNeighbourInt + leftInt)
+            }
+            
+            // The right number of the pair should be added to the right neighbour
+            if let rightNeighbour = exploding.rightNeighbour, case let .integer(rightNeighbourInt) = rightNeighbour.number {
+                rightNeighbour.number = .integer(rightNeighbourInt + rightInt)
+            }
+            
+            // The pair itself should always reset to 0
+            exploding.number = .integer(0)
+            
+            return true
+        } else {
+            return false
+        }
+    }
+    
     /**
      This isn't working because the flattenedPairs variable unwraps the Numbers too far
      - returns: Bool of if something was exploded
@@ -380,24 +399,21 @@ splitExample2
 splitExample3
 
 let explodeExample1 = SnailFishNumberWrapper([[[[[9,8],1],2],3],4])!
-//explodeExample1.flattenedPairs.forEach { print($0, $0.parentCount) }
-explodeExample1.firstPairThatShouldExplode
-//SnailFishNumberWrapper.explodeIfNecessary(explodeExample1)
+explodeExample1.explodeIfNecessary()
 explodeExample1
-explodeExample1.firstPairThatShouldExplode?.rightNeighbour
 
 let explodeExample2 = SnailFishNumberWrapper([7,[6,[5,[4,[3,2]]]]])!
-explodeExample2.firstPairThatShouldExplode
-explodeExample2.firstPairThatShouldExplode?.leftNeighbour
+explodeExample2.explodeIfNecessary()
+explodeExample2
 
 let explodeExample3 = SnailFishNumberWrapper([[6,[5,[4,[3,2]]]],1])!
-explodeExample3.firstPairThatShouldExplode
-explodeExample3.firstPairThatShouldExplode?.rightNeighbour
+explodeExample3.explodeIfNecessary()
+explodeExample3
 
 let explodeExample4 = SnailFishNumberWrapper([[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]])!
-explodeExample4.firstPairThatShouldExplode
-explodeExample4.firstPairThatShouldExplode?.rightNeighbour
+explodeExample4.explodeIfNecessary()
+explodeExample4
 
 let explodeExample5 = SnailFishNumberWrapper([[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]])!
-explodeExample5.firstPairThatShouldExplode
-explodeExample5.firstPairThatShouldExplode?.rightNeighbour
+explodeExample5.explodeIfNecessary()
+explodeExample5
