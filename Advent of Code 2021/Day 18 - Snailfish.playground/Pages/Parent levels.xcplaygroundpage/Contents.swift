@@ -2,6 +2,8 @@ import Foundation
 
 var greeting = "Hello, playground"
 
+infix operator ++ : AdditionPrecedence
+
 class SnailFishNumber {
     enum Error: Swift.Error {
         case couldntInit(from: Any)
@@ -52,6 +54,8 @@ class SnailFishNumber {
     
     init(pair: (SnailFishNumber, SnailFishNumber)) {
         self.number = .pair(pair.0, pair.1)
+        pair.0.parent = self
+        pair.1.parent = self
     }
     
     var index: Int? {
@@ -67,47 +71,26 @@ class SnailFishNumber {
         }
     }
     
-    func shouldSplitOrExplode() -> String {
-        let splitter = firstNumberThatShouldSplit
-        let exploder = firstPairThatShouldExplode
-        
-        if let splitter = splitter, let exploder = exploder {
-            if let splitterIndex = splitter.index, let exploderIndex = exploder.index {
-                if splitterIndex < exploderIndex {
-                    return "Should split first"
-                } else {
-                    return "Should explode first"
-                }
-            } else {
-                return "Something went wrong, we have either a splitter or an exploder without an index"
-            }
-        }
-        
-        if splitter != nil {
-            return "We should split"
-        }
-        
-        if exploder != nil {
-            return "We should explode"
-        }
-        
-        return "We should no nothing"
-    }
-    
     /**
      - Would be nice if we could pass through the already identified splitter / exploder, otherwise they are unwrapped again in the later functions.
      - throws: `SnailFishNumberError.splitOrExplodeWithoutIndex`
      - returns: A Bool of if something was reduced (either split or exploded)
      */
     func performNextReduction() throws -> Bool {
+        print(self)
+        
         let splitter = firstNumberThatShouldSplit
         let exploder = firstPairThatShouldExplode
         
         if let splitter = splitter, let exploder = exploder {
+            print("Split \(splitter) and explode \(exploder)")
             if let splitterIndex = splitter.index, let exploderIndex = exploder.index {
-                if splitterIndex < exploderIndex {
+                print("Split index \(splitterIndex) explode index \(exploderIndex)")
+                if splitterIndex <= exploderIndex {
+                    print("Should split \(splitter)")
                     return splitIfNecessary()
                 } else {
+                    print("Should explode \(exploder)")
                     return explodeIfNecessary()
                 }
             } else {
@@ -116,10 +99,12 @@ class SnailFishNumber {
         }
         
         if splitter != nil {
+            print("Should split \(splitter!)")
             return splitIfNecessary()
         }
         
         if exploder != nil {
+            print("Should explode \(exploder!)")
             return explodeIfNecessary()
         }
         
@@ -339,10 +324,13 @@ class SnailFishNumber {
      We might need to use a parent based level system.
      */
     static func + (lhs: SnailFishNumber, rhs: SnailFishNumber) -> SnailFishNumber {
+        SnailFishNumber(pair: (lhs, rhs))
+    }
+    
+    static func ++ (lhs: SnailFishNumber, rhs: SnailFishNumber) throws -> SnailFishNumber {
         let newPair = SnailFishNumber(pair: (lhs, rhs))
         
-        lhs.parent = newPair
-        rhs.parent = newPair
+        try newPair.reduce()
         
         return newPair
     }
@@ -367,6 +355,7 @@ extension SnailFishNumber: CustomStringConvertible {
     }
 }
 
+/*
 let example1 = SnailFishNumber([1,2])
 let example2 = SnailFishNumber([[1,2],3])
 let example3 = SnailFishNumber([9,[8,7]])
@@ -467,6 +456,58 @@ do {
     let reducedExample3 = SnailFishNumber([1,1])! + SnailFishNumber([2,2])! + SnailFishNumber([3,3])! + SnailFishNumber([4,4])! + SnailFishNumber([5,5])! + SnailFishNumber([6,6])!
     try reducedExample3.reduce()
     reducedExample3
+    
+    let reducedExample4 = SnailFishNumber([[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]])!
+    + SnailFishNumber([7,[[[3,7],[4,3]],[[6,3],[8,8]]]])!
+    + SnailFishNumber([[2,[[0,8],[3,4]]],[[[6,7],1],[7,[1,6]]]])!
+    + SnailFishNumber([[[[2,4],7],[6,[0,5]]],[[[6,8],[2,8]],[[2,1],[4,5]]]])!
+    + SnailFishNumber([7,[5,[[3,8],[1,4]]]])!
+    + SnailFishNumber([[2,[2,2]],[8,[8,1]]])!
+    + SnailFishNumber([2,9])!
+    + SnailFishNumber([1,[[[9,3],9],[[9,0],[0,7]]]])!
+    + SnailFishNumber([[[5,[7,4]],7],1])!
+    + SnailFishNumber([[[[4,2],2],6],[8,7]])!
+    
+//    try reducedExample4.reduce() // [[[[7,8],[7,7]],[[0,8],[7,7]]],[[[6,4],6],[8,7]]]
+    reducedExample4
+    
+    // Might be getting the wrong answer because we're adding them all together and then reducing, we need to try reducing after each addition
+    
+    // Different but still wrong
+    // [[[[7,8],[7,8]],[[8,8],[0,8]]],[[[8,4],6],[8,7]]]
+//    let reducedExample5 = try SnailFishNumber([[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]])!
+//    ++ SnailFishNumber([7,[[[3,7],[4,3]],[[6,3],[8,8]]]])!
+//    ++ SnailFishNumber([[2,[[0,8],[3,4]]],[[[6,7],1],[7,[1,6]]]])!
+//    ++ SnailFishNumber([[[[2,4],7],[6,[0,5]]],[[[6,8],[2,8]],[[2,1],[4,5]]]])!
+//    ++ SnailFishNumber([7,[5,[[3,8],[1,4]]]])!
+//    ++ SnailFishNumber([[2,[2,2]],[8,[8,1]]])!
+//    ++ SnailFishNumber([2,9])!
+//    ++ SnailFishNumber([1,[[[9,3],9],[[9,0],[0,7]]]])!
+//    ++ SnailFishNumber([[[5,[7,4]],7],1])!
+//    ++ SnailFishNumber([[[[4,2],2],6],[8,7]])!
+    
+} catch {
+    error
+}
+ */
+
+do {
+    let largeExampleA = SnailFishNumber([[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]])!
+    let largeExampleB = SnailFishNumber([7,[[[3,7],[4,3]],[[6,3],[8,8]]]])!
+    let largeExampleC = SnailFishNumber([[2,[[0,8],[3,4]]],[[[6,7],1],[7,[1,6]]]])!
+    let largeExampleD = SnailFishNumber([[[[2,4],7],[6,[0,5]]],[[[6,8],[2,8]],[[2,1],[4,5]]]])!
+    let largeExampleE = SnailFishNumber([7,[5,[[3,8],[1,4]]]])!
+    let largeExampleF = SnailFishNumber([[2,[2,2]],[8,[8,1]]])!
+    let largeExampleG = SnailFishNumber([2,9])!
+    let largeExampleH = SnailFishNumber([1,[[[9,3],9],[[9,0],[0,7]]]])!
+    let largeExampleI = SnailFishNumber([[[5,[7,4]],7],1])!
+    let largeExampleJ = SnailFishNumber([[[[4,2],2],6],[8,7]])!
+    
+//    let largeExampleAB = try largeExampleA ++ largeExampleB
+    let largeExampleAB = largeExampleA + largeExampleB
+    try largeExampleAB.reduce()
+    largeExampleAB
+    
 } catch {
     error
 }
