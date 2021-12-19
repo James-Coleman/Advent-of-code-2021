@@ -127,7 +127,7 @@ class SnailFishNumber {
     }
     
     func reduce() throws {
-        var didSomething = false
+        var didSomething: Bool
         
         repeat {
             didSomething = try performNextReduction()
@@ -166,6 +166,8 @@ class SnailFishNumber {
             case .integer = outerRight.number {
             // [[left, centre], outerRight]
             return outerLeft
+        } else {
+            print(outerLeft.parentCount, outerLeft.number)
         }
         
         if
@@ -310,19 +312,6 @@ class SnailFishNumber {
     }
     
     /**
-     I'm not convinced this is incrementing the levels properly.
-     We might need to use a parent based level system.
-     */
-    static func + (lhs: SnailFishNumber, rhs: SnailFishNumber) -> SnailFishNumber {
-        let newPair = SnailFishNumber(pair: (lhs, rhs))
-        
-        lhs.parent = newPair
-        rhs.parent = newPair
-        
-        return newPair
-    }
-    
-    /**
      - returns: Bool of if something was split
      */
     func splitIfNecessary() -> Bool {
@@ -359,6 +348,19 @@ class SnailFishNumber {
             return false
         }
     }
+    
+    /**
+     I'm not convinced this is incrementing the levels properly.
+     We might need to use a parent based level system.
+     */
+    static func + (lhs: SnailFishNumber, rhs: SnailFishNumber) -> SnailFishNumber {
+        let newPair = SnailFishNumber(pair: (lhs, rhs))
+        
+        lhs.parent = newPair
+        rhs.parent = newPair
+        
+        return newPair
+    }
 }
 
 extension SnailFishNumber: Equatable {
@@ -380,106 +382,106 @@ extension SnailFishNumber: CustomStringConvertible {
     }
 }
 
-let example1 = SnailFishNumber([1,2])
-let example2 = SnailFishNumber([[1,2],3])
-let example3 = SnailFishNumber([9,[8,7]])
-let example4 = SnailFishNumber([[1,9], [8,5]])
-let example5 = SnailFishNumber([[[[1,2],[3,4]],[[5,6],[7,8]]],9])
-let example6 = SnailFishNumber([[[9,[3,8]],[[0,9],6]],[[[3,7],[4,9]],3]])
-let example7 = SnailFishNumber([[[[1,3],[5,3]],[[1,3],[8,7]]],[[[4,9],[6,9]],[[8,2],[7,3]]]])
-
-let exampleAdded = SnailFishNumber([1,2])! + SnailFishNumber([[3,4],5])!
-
-let splitExample0 = SnailFishNumber(9)!
-let splitExample1 = SnailFishNumber(10)!
-let splitExample2 = SnailFishNumber(11)!
-let splitExample3 = SnailFishNumber(12)!
-splitExample0.shouldSplitOrExplode()
-splitExample1.shouldSplitOrExplode()
-splitExample2.shouldSplitOrExplode()
-splitExample3.shouldSplitOrExplode()
-splitExample0.firstNumberThatShouldSplit
-splitExample1.firstNumberThatShouldSplit
-splitExample2.firstNumberThatShouldSplit
-splitExample3.firstNumberThatShouldSplit
-splitExample0.splitIfNecessary()
-splitExample1.splitIfNecessary()
-splitExample2.splitIfNecessary()
-splitExample3.splitIfNecessary()
-splitExample0
-splitExample1
-splitExample2
-splitExample3
-
-let explodeExample1 = SnailFishNumber([[[[[9,8],1],2],3],4])!
-explodeExample1.shouldSplitOrExplode()
-explodeExample1.explodeIfNecessary()
-explodeExample1
-explodeExample1.shouldSplitOrExplode()
-
-let explodeExample2 = SnailFishNumber([7,[6,[5,[4,[3,2]]]]])!
-explodeExample2.shouldSplitOrExplode()
-explodeExample2.explodeIfNecessary()
-explodeExample2
-
-let explodeExample3 = SnailFishNumber([[6,[5,[4,[3,2]]]],1])!
-explodeExample3.shouldSplitOrExplode()
-explodeExample3.explodeIfNecessary()
-explodeExample3
-
-let explodeExample4 = SnailFishNumber([[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]])!
-explodeExample4.shouldSplitOrExplode()
-explodeExample4.explodeIfNecessary()
-explodeExample4
-
-let explodeExample5 = SnailFishNumber([[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]])!
-explodeExample5.shouldSplitOrExplode()
-explodeExample5.explodeIfNecessary()
-explodeExample5
-
-let steppedExample1 = SnailFishNumber([[[[4,3],4],4],[7,[[8,4],9]]])! + SnailFishNumber([1,1])!
-steppedExample1.shouldSplitOrExplode()
-steppedExample1.explodeIfNecessary()
-steppedExample1
-steppedExample1.shouldSplitOrExplode()
-steppedExample1.explodeIfNecessary()
-steppedExample1
-steppedExample1.shouldSplitOrExplode()
-steppedExample1.splitIfNecessary()
-steppedExample1
-steppedExample1.shouldSplitOrExplode()
-steppedExample1.splitIfNecessary()
-steppedExample1
-steppedExample1.shouldSplitOrExplode()
-steppedExample1.explodeIfNecessary()
-steppedExample1
-steppedExample1.shouldSplitOrExplode()
+//let example1 = SnailFishNumber([1,2])
+//let example2 = SnailFishNumber([[1,2],3])
+//let example3 = SnailFishNumber([9,[8,7]])
+//let example4 = SnailFishNumber([[1,9], [8,5]])
+//let example5 = SnailFishNumber([[[[1,2],[3,4]],[[5,6],[7,8]]],9])
+//let example6 = SnailFishNumber([[[9,[3,8]],[[0,9],6]],[[[3,7],[4,9]],3]])
+//let example7 = SnailFishNumber([[[[1,3],[5,3]],[[1,3],[8,7]]],[[[4,9],[6,9]],[[8,2],[7,3]]]])
+//
+//let exampleAdded = SnailFishNumber([1,2])! + SnailFishNumber([[3,4],5])!
+//
+//let splitExample0 = SnailFishNumber(9)!
+//let splitExample1 = SnailFishNumber(10)!
+//let splitExample2 = SnailFishNumber(11)!
+//let splitExample3 = SnailFishNumber(12)!
+//splitExample0.shouldSplitOrExplode()
+//splitExample1.shouldSplitOrExplode()
+//splitExample2.shouldSplitOrExplode()
+//splitExample3.shouldSplitOrExplode()
+//splitExample0.firstNumberThatShouldSplit
+//splitExample1.firstNumberThatShouldSplit
+//splitExample2.firstNumberThatShouldSplit
+//splitExample3.firstNumberThatShouldSplit
+//splitExample0.splitIfNecessary()
+//splitExample1.splitIfNecessary()
+//splitExample2.splitIfNecessary()
+//splitExample3.splitIfNecessary()
+//splitExample0
+//splitExample1
+//splitExample2
+//splitExample3
+//
+//let explodeExample1 = SnailFishNumber([[[[[9,8],1],2],3],4])!
+//explodeExample1.shouldSplitOrExplode()
+//explodeExample1.explodeIfNecessary()
+//explodeExample1
+//explodeExample1.shouldSplitOrExplode()
+//
+//let explodeExample2 = SnailFishNumber([7,[6,[5,[4,[3,2]]]]])!
+//explodeExample2.shouldSplitOrExplode()
+//explodeExample2.explodeIfNecessary()
+//explodeExample2
+//
+//let explodeExample3 = SnailFishNumber([[6,[5,[4,[3,2]]]],1])!
+//explodeExample3.shouldSplitOrExplode()
+//explodeExample3.explodeIfNecessary()
+//explodeExample3
+//
+//let explodeExample4 = SnailFishNumber([[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]])!
+//explodeExample4.shouldSplitOrExplode()
+//explodeExample4.explodeIfNecessary()
+//explodeExample4
+//
+//let explodeExample5 = SnailFishNumber([[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]])!
+//explodeExample5.shouldSplitOrExplode()
+//explodeExample5.explodeIfNecessary()
+//explodeExample5
+//
+//let steppedExample1 = SnailFishNumber([[[[4,3],4],4],[7,[[8,4],9]]])! + SnailFishNumber([1,1])!
+//steppedExample1.shouldSplitOrExplode()
+//steppedExample1.explodeIfNecessary()
+//steppedExample1
+//steppedExample1.shouldSplitOrExplode()
+//steppedExample1.explodeIfNecessary()
+//steppedExample1
+//steppedExample1.shouldSplitOrExplode()
+//steppedExample1.splitIfNecessary()
+//steppedExample1
+//steppedExample1.shouldSplitOrExplode()
+//steppedExample1.splitIfNecessary()
+//steppedExample1
+//steppedExample1.shouldSplitOrExplode()
+//steppedExample1.explodeIfNecessary()
+//steppedExample1
+//steppedExample1.shouldSplitOrExplode()
+//
+//do {
+//    let steppedExample2 = SnailFishNumber([[[[4,3],4],4],[7,[[8,4],9]]])! + SnailFishNumber([1,1])!
+//    try steppedExample2.reduce()
+//    steppedExample2
+//} catch {
+//    error
+//}
 
 do {
-    let steppedExample2 = SnailFishNumber([[[[4,3],4],4],[7,[[8,4],9]]])! + SnailFishNumber([1,1])!
-    try steppedExample2.reduce()
-    steppedExample2
-} catch {
-    error
-}
-
-do {
-    let reducedExample1 = SnailFishNumber([1,1])! + SnailFishNumber([2,2])! + SnailFishNumber([3,3])! + SnailFishNumber([4,4])!
-    try reducedExample1.reduce()
-    reducedExample1
-    
-    let reducedExample2 = SnailFishNumber([1,1])! + SnailFishNumber([2,2])! + SnailFishNumber([3,3])! + SnailFishNumber([4,4])! + SnailFishNumber([5,5])!
-    try reducedExample2.reduce()
-    reducedExample2
+//    let reducedExample1 = SnailFishNumber([1,1])! + SnailFishNumber([2,2])! + SnailFishNumber([3,3])! + SnailFishNumber([4,4])!
+//    try reducedExample1.reduce()
+//    reducedExample1
+//
+//    let reducedExample2 = SnailFishNumber([1,1])! + SnailFishNumber([2,2])! + SnailFishNumber([3,3])! + SnailFishNumber([4,4])! + SnailFishNumber([5,5])!
+//    try reducedExample2.reduce()
+//    reducedExample2
     
     let reducedExample2a = SnailFishNumber([[[[[1,1],[2,2]],[3,3]],[4,4]],[5,5]])
     reducedExample2a?.shouldSplitOrExplode()
     try reducedExample2a?.reduce()
     reducedExample2a
     
-    let reducedExample3 = SnailFishNumber([1,1])! + SnailFishNumber([2,2])! + SnailFishNumber([3,3])! + SnailFishNumber([4,4])! + SnailFishNumber([5,5])! + SnailFishNumber([6,6])!
-    try reducedExample3.reduce()
-    reducedExample3
+//    let reducedExample3 = SnailFishNumber([1,1])! + SnailFishNumber([2,2])! + SnailFishNumber([3,3])! + SnailFishNumber([4,4])! + SnailFishNumber([5,5])! + SnailFishNumber([6,6])!
+//    try reducedExample3.reduce()
+//    reducedExample3
 } catch {
     error
 }
