@@ -417,3 +417,21 @@ let explodeExample5 = SnailFishNumberWrapper([[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]])!
 explodeExample5.shouldSplitOrExplode()
 explodeExample5.explodeIfNecessary()
 explodeExample5
+
+let steppedExample1 = SnailFishNumberWrapper([[[[4,3],4],4],[7,[[8,4],9]]])! + SnailFishNumberWrapper([1,1])!
+steppedExample1.shouldSplitOrExplode()
+steppedExample1.explodeIfNecessary()
+steppedExample1
+steppedExample1.shouldSplitOrExplode()
+steppedExample1.explodeIfNecessary()
+steppedExample1
+steppedExample1.shouldSplitOrExplode()
+steppedExample1.splitIfNecessary()
+steppedExample1
+steppedExample1.shouldSplitOrExplode()
+steppedExample1.splitIfNecessary()
+steppedExample1
+steppedExample1.shouldSplitOrExplode()
+steppedExample1.explodeIfNecessary()
+steppedExample1
+steppedExample1.shouldSplitOrExplode()
