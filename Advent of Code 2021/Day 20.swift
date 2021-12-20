@@ -133,6 +133,20 @@ func day20() {
         }
     }
     
+    func generation(_ generation: Int, of input: String, using algorithm: String) throws -> [[Character]] {
+        var currentIteration: [[Character]]? = nil
+        
+        for i in 0..<generation {
+            if let currentIterationUnwrapped = currentIteration {
+                currentIteration = try nextImage(from: currentIterationUnwrapped, algorithm: algorithm, currentGeneration: i)
+            } else {
+                currentIteration = try nextImage(from: input, algorithm: algorithm, currentGeneration: i)
+            }
+        }
+        
+        return currentIteration ?? []
+    }
+    
     let redditAlgorithm = """
     #.#.#.#.#......#.#.#.#.##..#.##.##..#..##...#.#.#.#...##.##.##.###....#..#...#.#..###.#...#..##.#.###..#..####.###...#.#.#..##..##.##..##..###..#....#.#....#####.#...###...#.#....###...#..##.##..#..#.##..###..#.##.###..#.####...#.##.....#.###...#.##.##.#.#######...#.###..##..##..#.#.#.#####...#....#.....##.#.#...##.######....#..#......#.#.#.#.##...######.#.#####..#####..#.#.#.#.###.#.#....#..##..#..#.#.#..##....##..#.#.......##...#..####.####.#.#..#.###..#...#......###...#...#.##.#.####..#.#....###.####..#.
     """
@@ -356,10 +370,28 @@ func day20() {
     ...##...#.###.#.....#..#.###..#...###.###.#.######.####.#...##.##.###.##.....#.##..##.#.####..###.#.
     """
 
+    let exampleInput = """
+    #..#.
+    #....
+    ##..#
+    ..#..
+    ..###
+    """
+
+    let exampleAlgorithm = """
+    ..#.#..#####.#.#.#.###.##.....###.##.#..###.####..#####..#....#..#..##..###..######.###...####..#..#####..##..#.#####...##.#.#..#.##..#.#......#.###.######.###.####...#.##.##..#..#..#####.....#.#....###..#.##......#.....#..#..#..##..#...##.######.####.####.#.#...#.......#..#.#.#...####.##.#......#..#...##.#.##..#...##.#.##..###.#......#.#.......#.#.#.####.###.##...#.....####.#..#..#.##.#....##..#.####....##...##..#...#......#.#.......#.......##..####..#...#.#.#...##..#.#..###..#####........#..####......#..#
+    """
+    
     do {
-        let puzzleGen1 = try nextImage(from: puzzleInput, algorithm: puzzleAlgorithm)
-        let puzzleGen2 = try nextImage(from: puzzleGen1, algorithm: puzzleAlgorithm, currentGeneration: 1)
-        print(litPixels(in: puzzleGen2)) // 5419 (correct)
+//        let puzzleGen1 = try nextImage(from: puzzleInput, algorithm: puzzleAlgorithm)
+//        let puzzleGen2 = try nextImage(from: puzzleGen1, algorithm: puzzleAlgorithm, currentGeneration: 1)
+//        print(litPixels(in: puzzleGen2)) // 5419 (correct)
+        
+//        let exampleGen50 = try generation(50, of: exampleInput, using: exampleAlgorithm)
+//        print(litPixels(in: exampleGen50)) // 3351 (correct)
+        
+        let puzzleGen50 = try generation(50, of: puzzleInput, using: puzzleAlgorithm)
+        print(litPixels(in: puzzleGen50)) // 17325 (correct)
     } catch {
         print(error)
     }
