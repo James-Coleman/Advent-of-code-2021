@@ -11,6 +11,7 @@
 		C67E57282768844E003CA5C3 /* Day 14.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67E57272768844E003CA5C3 /* Day 14.swift */; };
 		C689EFD0275C172E006901E2 /* Day 4.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689EFCF275C172E006901E2 /* Day 4.swift */; };
 		C69401DC276FC85600A107C7 /* Day 18.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69401DB276FC85600A107C7 /* Day 18.swift */; };
+		C69401DF27708C6A00A107C7 /* Day 20.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69401DE27708C6A00A107C7 /* Day 20.swift */; };
 		C6C0AFF02762123700E1D404 /* Day 9.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C0AFEF2762123700E1D404 /* Day 9.swift */; };
 		C6CC145527574732006CA598 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CC145427574732006CA598 /* main.swift */; };
 		C6CF8ADC2767B252003E0597 /* Day 12.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6CF8ADB2767B252003E0597 /* Day 12.swift */; };
@@ -42,6 +43,8 @@
 		C689EFD1275C874C006901E2 /* Day 5.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 5.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C689EFD2275DE8F2006901E2 /* Day 6 - Lanternfish.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 6 - Lanternfish.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C69401DB276FC85600A107C7 /* Day 18.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day 18.swift"; sourceTree = "<group>"; };
+		C69401DD27707A5500A107C7 /* Day 20 - Trench Map.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 20 - Trench Map.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		C69401DE27708C6A00A107C7 /* Day 20.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day 20.swift"; sourceTree = "<group>"; };
 		C6A3586B275BFB9600526EB9 /* Day 4.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 4.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6A35DA5276B086100F18765 /* Day 16 - Packet Decoder.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 16 - Packet Decoder.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6A7681C276DB5510055D8D6 /* Day 18 - Snailfish.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 18 - Snailfish.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -103,6 +106,7 @@
 				C6CF8AE12769EFF9003E0597 /* Day 15.swift */,
 				C6CF8AE4276CB625003E0597 /* Day 17.swift */,
 				C69401DB276FC85600A107C7 /* Day 18.swift */,
+				C69401DE27708C6A00A107C7 /* Day 20.swift */,
 				C6CC145B27574856006CA598 /* Day 1.playground */,
 				C68948FE2758BC40003DF504 /* Day 2.playground */,
 				C6B3E4962759E2560068D28C /* Day 3.playground */,
@@ -121,6 +125,7 @@
 				C6A35DA5276B086100F18765 /* Day 16 - Packet Decoder.playground */,
 				C6CF8AE3276C8B59003E0597 /* Day 17 - Trick Shot.playground */,
 				C6A7681C276DB5510055D8D6 /* Day 18 - Snailfish.playground */,
+				C69401DD27707A5500A107C7 /* Day 20 - Trench Map.playground */,
 			);
 			path = "Advent of Code 2021";
 			sourceTree = "<group>";
@@ -190,6 +195,7 @@
 				C67E57282768844E003CA5C3 /* Day 14.swift in Sources */,
 				C6CF8ADC2767B252003E0597 /* Day 12.swift in Sources */,
 				C6161C4B275E32EE0002AA50 /* Day 5.swift in Sources */,
+				C69401DF27708C6A00A107C7 /* Day 20.swift in Sources */,
 				C6CC145527574732006CA598 /* main.swift in Sources */,
 				C6CF8AE5276CB626003E0597 /* Day 17.swift in Sources */,
 			);
