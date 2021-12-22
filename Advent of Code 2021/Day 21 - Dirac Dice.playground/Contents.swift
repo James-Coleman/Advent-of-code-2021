@@ -56,4 +56,5 @@ func part1(player1Start: Int, player2Start: Int) -> Int? {
 }
 
 //part1(player1Start: 4, player2Start: 8) // 739785 (correct)
-part1(player1Start: 8, player2Start: 6) // 503478 (correct)
+//part1(player1Start: 8, player2Start: 6) // 503478 (correct)
+
