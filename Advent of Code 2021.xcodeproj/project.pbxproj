@@ -50,6 +50,7 @@
 		C6A3586B275BFB9600526EB9 /* Day 4.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 4.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6A35DA5276B086100F18765 /* Day 16 - Packet Decoder.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 16 - Packet Decoder.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6A7681C276DB5510055D8D6 /* Day 18 - Snailfish.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 18 - Snailfish.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		C6AAD2FC27748BCA00D402CE /* Day 23 - Amphipod.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 23 - Amphipod.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6B1478F276741190014F185 /* Day 13 - Transparent Origami.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 13 - Transparent Origami.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6B3E4962759E2560068D28C /* Day 3.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 3.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6C0AFE92760A9E300E1D404 /* Day 8 - Seven Segment Search.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 8 - Seven Segment Search.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -133,6 +134,7 @@
 				C69401DD27707A5500A107C7 /* Day 20 - Trench Map.playground */,
 				C6C2B55B2771AE8200BF1954 /* Day 21 - Dirac Dice.playground */,
 				C660943C27731C1D00D167A1 /* Day 22 - Reactor Reboot.playground */,
+				C6AAD2FC27748BCA00D402CE /* Day 23 - Amphipod.playground */,
 			);
 			path = "Advent of Code 2021";
 			sourceTree = "<group>";
