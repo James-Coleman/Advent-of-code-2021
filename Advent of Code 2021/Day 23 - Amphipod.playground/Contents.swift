@@ -122,3 +122,34 @@ func hanoiRoute(previous: [Towers], target: Towers) -> [Towers] {
 }
 
 //hanoiRoute(previous: [.starter3], target: .target3) // infinite loop
+
+func hanoiRoutes() -> [Towers]? {
+    var latestGen: Set<Towers> = [.starter3]
+    var allGens: Set<Towers> = [.starter3]
+    var routes: [[Towers]] = [[.starter3]]
+    
+    while true {
+        let allNewRoutes = routes.flatMap { route -> [[Towers]] in
+            guard let lastTower = route.last else { return [] }
+            let nextGens = towersOfHanoi(towers: lastTower)
+            let newRoutes = nextGens.compactMap { nextGen -> [Towers]? in
+                if route.contains(nextGen) {
+                    return nil
+                } else {
+                    return route + [nextGen]
+                }
+            }
+            return newRoutes
+        }
+        
+        for route in routes {
+            if route.last == .target3 {
+                return route
+            }
+        }
+        
+        routes = allNewRoutes
+    }
+}
+
+hanoiRoutes()
