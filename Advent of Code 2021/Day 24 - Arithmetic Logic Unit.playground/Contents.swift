@@ -8,95 +8,73 @@ enum Error: Swift.Error {
     case inputOperationWithoutTwoParameters
     case mathematicalOperationWithoutThreeParameters
     case inputIsNotInt(String)
-    case dictDoesNotContainVariables(String)
     case tryingToDivideByZero
     case tryingToModuloByZero
+    case nilInput
 }
 
-func execute(operation: [String], on dict: inout [String: Int]) throws {
-    /// This is wrong, the input should be a separate integer
-    func inp(_ input: Int, operation: [String], on dict: inout [String: Int]) throws {
-        guard operation.count >= 2 else { throw Error.inputOperationWithoutTwoParameters }
-        
-        dict[operation[1]] = input
-    }
+func inp(_ input: Int, operation: [String], on dict: inout [String: Int]) throws {
+    guard operation.count >= 2 else { throw Error.inputOperationWithoutTwoParameters }
     
-    func add(operation: [String], on dict: inout [String: Int]) throws {
-        guard operation.count >= 3 else { throw Error.mathematicalOperationWithoutThreeParameters }
-        
-        guard let int1 = dict[operation[1]] else { throw Error.dictDoesNotContainVariables(operation[1]) }
-        guard let int2 = dict[operation[2]] else { throw Error.dictDoesNotContainVariables(operation[2]) }
-        
-        let sum = int1 + int2
-        
-        dict[operation[1]] = sum
-    }
+    dict[operation[1]] = input
+}
+
+func add(operation: [String], on dict: inout [String: Int]) throws {
+    guard operation.count >= 3 else { throw Error.mathematicalOperationWithoutThreeParameters }
     
-    func mul(operation: [String], on dict: inout [String: Int]) throws {
-        guard operation.count >= 3 else { throw Error.mathematicalOperationWithoutThreeParameters }
-        
-        guard let int1 = dict[operation[1]] else { throw Error.dictDoesNotContainVariables(operation[1]) }
-        guard let int2 = dict[operation[2]] else { throw Error.dictDoesNotContainVariables(operation[2]) }
-        
-        let product = int1 * int2
-        
-        dict[operation[1]] = product
-    }
+    let int1 = dict[operation[1]] ?? Int(operation[1]) ?? 0
+    let int2 = dict[operation[2]] ?? Int(operation[2]) ?? 0
     
-    func div(operation: [String], on dict: inout [String: Int]) throws {
-        guard operation.count >= 3 else { throw Error.mathematicalOperationWithoutThreeParameters }
-        
-        guard let int1 = dict[operation[1]] else { throw Error.dictDoesNotContainVariables(operation[1]) }
-        guard let int2 = dict[operation[2]] else { throw Error.dictDoesNotContainVariables(operation[2]) }
-        
-        guard int2 > 0 else { throw Error.tryingToDivideByZero }
-        
-        let (divided, _) = int1.quotientAndRemainder(dividingBy: int2)
-        
-        dict[operation[1]] = divided
-    }
+    let sum = int1 + int2
     
-    func mod(operation: [String], on dict: inout [String: Int]) throws {
-        guard operation.count >= 3 else { throw Error.mathematicalOperationWithoutThreeParameters }
-        
-        guard let int1 = dict[operation[1]] else { throw Error.dictDoesNotContainVariables(operation[1]) }
-        guard let int2 = dict[operation[2]] else { throw Error.dictDoesNotContainVariables(operation[2]) }
-        
-        guard int1 >= 0 else { throw Error.tryingToModuloByZero }
-        guard int2 > 0 else { throw Error.tryingToModuloByZero }
-        
-        let (_, remainder) = int1.quotientAndRemainder(dividingBy: int2)
-        
-        dict[operation[1]] = remainder
-    }
+    dict[operation[1]] = sum
+}
+
+func mul(operation: [String], on dict: inout [String: Int]) throws {
+    guard operation.count >= 3 else { throw Error.mathematicalOperationWithoutThreeParameters }
     
-    func eql(operation: [String], on dict: inout [String: Int]) throws {
-        guard operation.count >= 3 else { throw Error.mathematicalOperationWithoutThreeParameters }
-        
-        guard let int1 = dict[operation[1]] else { throw Error.dictDoesNotContainVariables(operation[1]) }
-        guard let int2 = dict[operation[2]] else { throw Error.dictDoesNotContainVariables(operation[2]) }
-        
-        dict[operation[1]] = int1 == int2 ? 1 : 0
-    }
+    let int1 = dict[operation[1]] ?? Int(operation[1]) ?? 0
+    let int2 = dict[operation[2]] ?? Int(operation[2]) ?? 0
     
-    guard let instruction = operation.first else { throw Error.emptyOperation }
+    let product = int1 * int2
     
-    switch instruction {
-        case "inp":
-            try inp(1, operation: operation, on: &dict)
-        case "add":
-            try add(operation: operation, on: &dict)
-        case "mul":
-            try mul(operation: operation, on: &dict)
-        case "div":
-            try div(operation: operation, on: &dict)
-        case "mod":
-            try mod(operation: operation, on: &dict)
-        case "eql":
-            try eql(operation: operation, on: &dict)
-        default:
-            throw Error.unknownInstruction(instruction)
-    }
+    dict[operation[1]] = product
+}
+
+func div(operation: [String], on dict: inout [String: Int]) throws {
+    guard operation.count >= 3 else { throw Error.mathematicalOperationWithoutThreeParameters }
+    
+    let int1 = dict[operation[1]] ?? Int(operation[1]) ?? 0
+    let int2 = dict[operation[2]] ?? Int(operation[2]) ?? 0
+    
+    guard int2 > 0 else { throw Error.tryingToDivideByZero }
+    
+    let (divided, _) = int1.quotientAndRemainder(dividingBy: int2)
+    
+    dict[operation[1]] = divided
+}
+
+func mod(operation: [String], on dict: inout [String: Int]) throws {
+    guard operation.count >= 3 else { throw Error.mathematicalOperationWithoutThreeParameters }
+    
+    let int1 = dict[operation[1]] ?? Int(operation[1]) ?? 0
+    let int2 = dict[operation[2]] ?? Int(operation[2]) ?? 0
+    
+    guard int1 >= 0 else { throw Error.tryingToModuloByZero }
+    guard int2 > 0 else { throw Error.tryingToModuloByZero }
+    
+    let (_, remainder) = int1.quotientAndRemainder(dividingBy: int2)
+    
+    dict[operation[1]] = remainder
+}
+
+func eql(operation: [String], on dict: inout [String: Int]) throws {
+    guard operation.count >= 3 else { throw Error.mathematicalOperationWithoutThreeParameters }
+    
+    let int1 = dict[operation[1]] ?? Int(operation[1]) ?? 0
+    let int2 = dict[operation[2]] ?? Int(operation[2]) ?? 0
+    
+    dict[operation[1]] = int1 == int2 ? 1 : 0
 }
 
 let example1 = """
@@ -104,4 +82,376 @@ inp x
 mul x -1
 """
 
+func execute(_ instructions: String, input: [Int]) throws -> [String: Int] {
+    var dict: [String: Int] = ["w": 0, "x": 0, "y": 0, "z": 0]
+    
+    let components = instructions.components(separatedBy: .newlines)
+    
+    var inputCount = 0
+    
+    for line in components {
+        let operation = line.components(separatedBy: .whitespaces)
+        
+        guard let instruction = operation.first else { throw Error.emptyOperation }
+        
+        switch instruction {
+            case "inp":
+                try inp(input[inputCount], operation: operation, on: &dict)
+                inputCount += 1
+            case "add":
+                try add(operation: operation, on: &dict)
+            case "mul":
+                try mul(operation: operation, on: &dict)
+            case "div":
+                try div(operation: operation, on: &dict)
+            case "mod":
+                try mod(operation: operation, on: &dict)
+            case "eql":
+                try eql(operation: operation, on: &dict)
+            default:
+                throw Error.unknownInstruction(instruction)
+        }
+    }
+    
+    return dict
+}
 
+//do {
+//    try execute(example1, input: [10])
+//} catch {
+//    error
+//}
+
+let isB3TimesA = """
+    inp z
+    inp x
+    mul z 3
+    eql z x
+    """
+
+//do {
+//    try execute(isB3TimesA, input: [10, 11])
+//    try execute(isB3TimesA, input: [10, 30])
+//} catch {
+//    error
+//}
+
+let convertToBinary = """
+    inp w
+    add z w
+    mod z 2
+    div w 2
+    add y w
+    mod y 2
+    div w 2
+    add x w
+    mod x 2
+    div w 2
+    mod w 2
+    """
+
+do {
+    try execute(convertToBinary, input: [0])
+    try execute(convertToBinary, input: [7])
+    try execute(convertToBinary, input: [8])
+    try execute(convertToBinary, input: [9])
+    try execute(convertToBinary, input: [15])
+    try execute(convertToBinary, input: [16])
+} catch {
+    error
+}
+
+let puzzleInput = """
+    inp w
+    mul x 0
+    add x z
+    mod x 26
+    div z 1
+    add x 12
+    eql x w
+    eql x 0
+    mul y 0
+    add y 25
+    mul y x
+    add y 1
+    mul z y
+    mul y 0
+    add y w
+    add y 15
+    mul y x
+    add z y
+    inp w
+    mul x 0
+    add x z
+    mod x 26
+    div z 1
+    add x 14
+    eql x w
+    eql x 0
+    mul y 0
+    add y 25
+    mul y x
+    add y 1
+    mul z y
+    mul y 0
+    add y w
+    add y 12
+    mul y x
+    add z y
+    inp w
+    mul x 0
+    add x z
+    mod x 26
+    div z 1
+    add x 11
+    eql x w
+    eql x 0
+    mul y 0
+    add y 25
+    mul y x
+    add y 1
+    mul z y
+    mul y 0
+    add y w
+    add y 15
+    mul y x
+    add z y
+    inp w
+    mul x 0
+    add x z
+    mod x 26
+    div z 26
+    add x -9
+    eql x w
+    eql x 0
+    mul y 0
+    add y 25
+    mul y x
+    add y 1
+    mul z y
+    mul y 0
+    add y w
+    add y 12
+    mul y x
+    add z y
+    inp w
+    mul x 0
+    add x z
+    mod x 26
+    div z 26
+    add x -7
+    eql x w
+    eql x 0
+    mul y 0
+    add y 25
+    mul y x
+    add y 1
+    mul z y
+    mul y 0
+    add y w
+    add y 15
+    mul y x
+    add z y
+    inp w
+    mul x 0
+    add x z
+    mod x 26
+    div z 1
+    add x 11
+    eql x w
+    eql x 0
+    mul y 0
+    add y 25
+    mul y x
+    add y 1
+    mul z y
+    mul y 0
+    add y w
+    add y 2
+    mul y x
+    add z y
+    inp w
+    mul x 0
+    add x z
+    mod x 26
+    div z 26
+    add x -1
+    eql x w
+    eql x 0
+    mul y 0
+    add y 25
+    mul y x
+    add y 1
+    mul z y
+    mul y 0
+    add y w
+    add y 11
+    mul y x
+    add z y
+    inp w
+    mul x 0
+    add x z
+    mod x 26
+    div z 26
+    add x -16
+    eql x w
+    eql x 0
+    mul y 0
+    add y 25
+    mul y x
+    add y 1
+    mul z y
+    mul y 0
+    add y w
+    add y 15
+    mul y x
+    add z y
+    inp w
+    mul x 0
+    add x z
+    mod x 26
+    div z 1
+    add x 11
+    eql x w
+    eql x 0
+    mul y 0
+    add y 25
+    mul y x
+    add y 1
+    mul z y
+    mul y 0
+    add y w
+    add y 10
+    mul y x
+    add z y
+    inp w
+    mul x 0
+    add x z
+    mod x 26
+    div z 26
+    add x -15
+    eql x w
+    eql x 0
+    mul y 0
+    add y 25
+    mul y x
+    add y 1
+    mul z y
+    mul y 0
+    add y w
+    add y 2
+    mul y x
+    add z y
+    inp w
+    mul x 0
+    add x z
+    mod x 26
+    div z 1
+    add x 10
+    eql x w
+    eql x 0
+    mul y 0
+    add y 25
+    mul y x
+    add y 1
+    mul z y
+    mul y 0
+    add y w
+    add y 0
+    mul y x
+    add z y
+    inp w
+    mul x 0
+    add x z
+    mod x 26
+    div z 1
+    add x 12
+    eql x w
+    eql x 0
+    mul y 0
+    add y 25
+    mul y x
+    add y 1
+    mul z y
+    mul y 0
+    add y w
+    add y 0
+    mul y x
+    add z y
+    inp w
+    mul x 0
+    add x z
+    mod x 26
+    div z 26
+    add x -4
+    eql x w
+    eql x 0
+    mul y 0
+    add y 25
+    mul y x
+    add y 1
+    mul z y
+    mul y 0
+    add y w
+    add y 15
+    mul y x
+    add z y
+    inp w
+    mul x 0
+    add x z
+    mod x 26
+    div z 26
+    add x 0
+    eql x w
+    eql x 0
+    mul y 0
+    add y 25
+    mul y x
+    add y 1
+    mul z y
+    mul y 0
+    add y w
+    add y 15
+    mul y x
+    add z y
+    """
+
+func nextNumber(previousNumber: [Int]) -> [Int] {
+    var newNumber = previousNumber
+    
+    for (index, int) in newNumber.enumerated().reversed() {
+        let newInt = int - 1
+        
+        if newInt == 0 {
+            newNumber[index] = 9
+        } else {
+            newNumber[index] = newInt
+            break
+        }
+    }
+    
+    return newNumber
+}
+
+func part1() throws -> [Int] {
+    var arrayToTest = Array(repeating: 9, count: 14)
+    
+    var dict = try execute(puzzleInput, input: arrayToTest)
+    
+    while dict["z"] != 0 {
+        arrayToTest = nextNumber(previousNumber: arrayToTest)
+        dict = try execute(puzzleInput, input: arrayToTest)
+    }
+    
+    return arrayToTest
+}
+
+let test = Array(repeating: 9, count: 14)
+
+nextNumber(previousNumber: [9,1])
+
+do {
+    print(try part1())
+} catch {
+    error
+}
