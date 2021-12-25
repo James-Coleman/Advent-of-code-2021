@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C6161C4B275E32EE0002AA50 /* Day 5.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6161C4A275E32EE0002AA50 /* Day 5.swift */; };
 		C62723A027761217008DA9E6 /* Day 24.swift in Sources */ = {isa = PBXBuildFile; fileRef = C627239F27761217008DA9E6 /* Day 24.swift */; };
+		C62A64EC2777C7710059EF27 /* Day 25.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62A64EB2777C7710059EF27 /* Day 25.swift */; };
 		C67E57282768844E003CA5C3 /* Day 14.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67E57272768844E003CA5C3 /* Day 14.swift */; };
 		C689EFD0275C172E006901E2 /* Day 4.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689EFCF275C172E006901E2 /* Day 4.swift */; };
 		C69401DC276FC85600A107C7 /* Day 18.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69401DB276FC85600A107C7 /* Day 18.swift */; };
@@ -37,6 +38,8 @@
 /* Begin PBXFileReference section */
 		C6161C4A275E32EE0002AA50 /* Day 5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day 5.swift"; sourceTree = "<group>"; };
 		C627239F27761217008DA9E6 /* Day 24.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day 24.swift"; sourceTree = "<group>"; };
+		C62A64EA2777B6DA0059EF27 /* Day 25 - Sea Cucumber.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 25 - Sea Cucumber.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		C62A64EB2777C7710059EF27 /* Day 25.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day 25.swift"; sourceTree = "<group>"; };
 		C641BA932764788200F5F964 /* Day 11 - Dumbo Octopus.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 11 - Dumbo Octopus.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C641BA9427686E6800F5F964 /* Day 14 - Extended Polymerization.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 14 - Extended Polymerization.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C660943C27731C1D00D167A1 /* Day 22 - Reactor Reboot.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 22 - Reactor Reboot.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -117,6 +120,7 @@
 				C69401DE27708C6A00A107C7 /* Day 20.swift */,
 				C6C5721527739A4A0087D4C9 /* Day 22.swift */,
 				C627239F27761217008DA9E6 /* Day 24.swift */,
+				C62A64EB2777C7710059EF27 /* Day 25.swift */,
 				C6CC145B27574856006CA598 /* Day 1.playground */,
 				C68948FE2758BC40003DF504 /* Day 2.playground */,
 				C6B3E4962759E2560068D28C /* Day 3.playground */,
@@ -140,6 +144,7 @@
 				C660943C27731C1D00D167A1 /* Day 22 - Reactor Reboot.playground */,
 				C6AAD2FC27748BCA00D402CE /* Day 23 - Amphipod.playground */,
 				C6AAD2FD2775A6B700D402CE /* Day 24 - Arithmetic Logic Unit.playground */,
+				C62A64EA2777B6DA0059EF27 /* Day 25 - Sea Cucumber.playground */,
 			);
 			path = "Advent of Code 2021";
 			sourceTree = "<group>";
@@ -211,6 +216,7 @@
 				C67E57282768844E003CA5C3 /* Day 14.swift in Sources */,
 				C6CF8ADC2767B252003E0597 /* Day 12.swift in Sources */,
 				C6161C4B275E32EE0002AA50 /* Day 5.swift in Sources */,
+				C62A64EC2777C7710059EF27 /* Day 25.swift in Sources */,
 				C69401DF27708C6A00A107C7 /* Day 20.swift in Sources */,
 				C6CC145527574732006CA598 /* main.swift in Sources */,
 				C6CF8AE5276CB626003E0597 /* Day 17.swift in Sources */,
