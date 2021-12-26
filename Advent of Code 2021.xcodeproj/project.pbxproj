@@ -65,6 +65,7 @@
 		C6C0AFF52763507800E1D404 /* Day 10 - Syntax Scoring.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 10 - Syntax Scoring.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6C2B55B2771AE8200BF1954 /* Day 21 - Dirac Dice.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 21 - Dirac Dice.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C6C5721527739A4A0087D4C9 /* Day 22.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day 22.swift"; sourceTree = "<group>"; };
+		C6CAF7DA27787F5900549A48 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C6CC145127574732006CA598 /* Advent of Code 2021 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Advent of Code 2021"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6CC145427574732006CA598 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		C6CC145B27574856006CA598 /* Day 1.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Day 1.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -91,6 +92,7 @@
 		C6CC144827574732006CA598 = {
 			isa = PBXGroup;
 			children = (
+				C6CAF7DA27787F5900549A48 /* README.md */,
 				C6CC145327574732006CA598 /* Advent of Code 2021 */,
 				C6CC145227574732006CA598 /* Products */,
 			);
