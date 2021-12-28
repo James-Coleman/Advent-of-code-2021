@@ -14,6 +14,10 @@ Another where I didn't really try the second part at the time due to the obvious
 ### Day 22 - Reactor Reboot (Part 2)
 The working code for Part 1 is pretty much brute force. Part 2 requires a more efficient solution.
 
+You could have a `Cube` created with `ClosedRange<Int>` as the dimensions for each axis. The product of all the axis would give the volume.
+You could subtract a cube from another by calculating the volume of the first, then the intersection with the second, then subtracting that intersecting volume from the original volume.
+You could add 2 cubes together by calculating the volume of both, then the intersection with each other, then subtracting 1 intersection from the total volume to account for the intersecting volume only counting once.
+
 ### Day 23 - Amphipod
 It's pretty close to Towers of Hanoi, but more complex due to the extra rules and the valid positions where 'amphipods' can go in between their source and destination. 
 With sufficient rules it might be easy enough to implement.
