@@ -18,6 +18,8 @@ You could have a `Cube` created with `ClosedRange<Int>` as the dimensions for ea
 You could subtract a cube from another by calculating the volume of the first, then the intersection with the second, then subtracting that intersecting volume from the original volume.
 You could add 2 cubes together by calculating the volume of both, then the intersection with each other, then subtracting 1 intersection from the total volume to account for the intersecting volume only counting once.
 
+When adding/subtracting a cube, you could split the remaining cube into 6. If some parts would have some 0 dimension, discard them entirely.
+
 ### Day 23 - Amphipod
 It's pretty close to Towers of Hanoi, but more complex due to the extra rules and the valid positions where 'amphipods' can go in between their source and destination. 
 With sufficient rules it might be easy enough to implement.

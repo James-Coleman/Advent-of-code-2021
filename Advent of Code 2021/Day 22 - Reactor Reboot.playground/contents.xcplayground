@@ -4,5 +4,6 @@
         <page name='Nested Dictionaries'/>
         <page name='Sets'/>
         <page name='Point Set'/>
+        <page name='Boolean Cubes'/>
     </pages>
 </playground>
